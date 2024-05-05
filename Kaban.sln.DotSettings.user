@@ -1,0 +1,11 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0d1d518d_002Dc789_002D48b3_002D9a93_002D692651623815/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from UnitTest1.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;ProjectFile&gt;D739CE41-45A4-479A-AD7A-D21FCC860EC1/d:Tests/f:WebApp.cs&lt;/ProjectFile&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.Db&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+    &lt;ProjectFile&gt;D739CE41-45A4-479A-AD7A-D21FCC860EC1/d:Tests/f:GraphQL.cs&lt;/ProjectFile&gt;&#xD;
+    &lt;ProjectFile&gt;D739CE41-45A4-479A-AD7A-D21FCC860EC1/d:Tests/f:Schema.cs&lt;/ProjectFile&gt;&#xD;
+  &lt;/Or&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

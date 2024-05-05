@@ -1,0 +1,12 @@
+﻿[
+  {
+    "Id": 8,
+    "Title": "Fire",
+    "Author": {
+      "Id": 4,
+      "Name": "Samia Kirk",
+      "Books": []
+    },
+    "AuthorId": 4
+  }
+]
