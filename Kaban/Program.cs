@@ -1,14 +1,21 @@
+using Kaban;
 using Kaban.Data;
 using Kaban.Query;
 using Microsoft.EntityFrameworkCore;
 
 bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContextPool<AppDbContext>(optionsBuilder =>
 {
-    optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("KabanDbConnectionString")!);
+    var cs = SecretHelper.GetSecret("KABANDBCONNECTIONSTRING");
+    if (cs == null)
+    {
+        cs = builder.Configuration.GetConnectionString("KABANDBCONNECTIONSTRING");
+    }
+
+    optionsBuilder.UseNpgsql(cs);
 });
 
 
@@ -25,9 +32,17 @@ builder.Services
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.EnsureCreated();
+}
+
 app.UseHttpsRedirection();
 
 app.MapGraphQL();
+
+app.MapGet("/", () => "Hello!");
 
 app.Run();
 

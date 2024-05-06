@@ -1,0 +1,19 @@
+services:
+  kaban-backend:
+    container_name: kaban
+    image: kaban:latest
+    restart: always
+    ports:
+      - 5264:5264
+      - 7001:7001
+    secrets:
+      - KABANDBCONNECTIONSTRING
+
+networks:
+  default:
+    external: true
+    name: nginxproxymanager_default
+    
+secrets:
+  KABANDBCONNECTIONSTRING:
+    environment: "KABANDBCONNECTIONSTRING"

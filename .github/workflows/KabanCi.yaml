@@ -1,0 +1,77 @@
+on:
+  push:
+    branches:
+      - main
+name: 'KabanCi'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v4
+
+      - name: 'Clean files on Remote Server'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            rm -rf ${{ secrets.APP_PATH }}
+
+      - name: 'Integration tests'
+        run: dotnet test
+
+      - name: 'Build the Docker image'
+        run: docker build ./Kaban/ -t kaban:latest
+
+      - name: 'Save Docker image as tar file'
+        run: |
+          docker save -o kaban.tar kaban:latest
+          chmod 666 ./kaban.tar
+
+      - name: 'Transfer Docker Compose file to remote server'
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: "./kaban.tar"
+          target: ${{ secrets.APP_PATH }}
+          overwrite: true
+
+      - name: 'Load Docker image on remote server'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            docker load -i ${{ secrets.APP_PATH }}/kaban.tar
+
+      - name: 'Transfer Docker Compose file to remote server'
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: "./Kaban/docker-compose.yaml"
+          target: ${{ secrets.APP_PATH }}
+          strip_components: 2
+          overwrite: true
+
+      - name: 'Deploy Docker containers using Docker Compose on remote server'
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          KABANDBCONNECTIONSTRING: ${{ secrets.KABANDBCONNECTIONSTRING }}
+          SHA: ${{ github.sha }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          envs: SHA,KABANDBCONNECTIONSTRING
+          debug: true
+          script: |
+            docker compose -f ${{ secrets.APP_PATH }}/docker-compose.yaml up -d

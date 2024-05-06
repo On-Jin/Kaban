@@ -1,0 +1,14 @@
+﻿services:
+  kaban-backend:
+    container_name: kaban
+    image: kaban:latest
+    restart: always
+    ports:
+      - 5264:5264
+      - 7001:7001
+    secrets:
+      - KABANDBCONNECTIONSTRING
+
+secrets:
+  KABANDBCONNECTIONSTRING:
+    environment: "KABANDBCONNECTIONSTRING"
