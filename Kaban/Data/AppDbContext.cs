@@ -1,4 +1,4 @@
-﻿using Kaban.Model;
+﻿using Kaban.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kaban.Data;
@@ -7,6 +7,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 {
     public DbSet<Book> Books { get; set; }
     public DbSet<Author> Authors { get; set; }
+    
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -15,7 +17,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .WithOne(e => e.Author)
             .HasForeignKey(e => e.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+
         modelBuilder.Entity<Book>()
             .HasOne(e => e.Author)
             .WithMany(e => e.Books)

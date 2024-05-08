@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 using Kaban.Data;
-using Kaban.Model;
+using Kaban.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;

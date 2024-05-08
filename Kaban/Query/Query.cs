@@ -1,5 +1,5 @@
 ﻿using Kaban.Data;
-using Kaban.Model;
+using Kaban.Models;
 
 namespace Kaban.Query;
 
