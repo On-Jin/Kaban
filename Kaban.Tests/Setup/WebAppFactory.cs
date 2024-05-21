@@ -31,7 +31,12 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
         {
             services.Configure<TestAuthHandlerOptions>(options => options.DefaultUserId = "1");
 
-            services.AddAuthentication(TestAuthHandler.AuthenticationScheme)
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = TestAuthHandler.AuthenticationScheme;
+                    options.DefaultScheme = TestAuthHandler.AuthenticationScheme;
+                    options.DefaultChallengeScheme = TestAuthHandler.AuthenticationScheme;
+                })
                 .AddScheme<TestAuthHandlerOptions, TestAuthHandler>(TestAuthHandler.AuthenticationScheme,
                     options => { });
         });
@@ -94,11 +99,23 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
         };
         db.Authors.Add(author);
 
-        var user = new User()
         {
-            Id = new Guid("458ef677-f7a1-424a-bea4-0d6d8ec95717"),
-            DiscordId = "159484228503624441"
-        };
+            var user = new User()
+            {
+                Id = new Guid(TestHelper.GuidDiscordAuth),
+                DiscordId = "159484228503624441",
+                DiscordAvatar = "gyfujnokygujokmplyhjnk",
+                DiscordUsername = "qwuiewou"
+            };
+            db.Users.Add(user);
+        }
+        {
+            var user = new User()
+            {
+                Id = new Guid(TestHelper.GuidShadowAuth),
+            };
+            db.Users.Add(user);
+        }
         await db.SaveChangesAsync();
     }
 

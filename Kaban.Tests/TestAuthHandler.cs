@@ -6,6 +6,13 @@ using Microsoft.Extensions.Options;
 
 namespace Kaban.Tests;
 
+public static class TestHelper
+{
+    public const string GuidDiscordAuth = "458ef677-f7a1-424a-bea4-0d6d8ec95717";
+    public const string GuidShadowAuth = "158ef677-f7a1-424a-bea4-0d6d8ec95717";
+    public const string HeaderUserGuid = "UserGuid";
+}
+
 public class TestAuthHandlerOptions : AuthenticationSchemeOptions
 {
     public string DefaultUserId { get; set; } = null!;
@@ -31,11 +38,19 @@ public class TestAuthHandler : AuthenticationHandler<TestAuthHandlerOptions>
             return Task.FromResult(AuthenticateResult.NoResult());
         }
 
-        var claims = new List<Claim> { };
+        var claims = new List<Claim>
+        {
+            new Claim("urn:discord:id", "259484228503624441")
+        };
 
-        claims.Add(new Claim(ClaimTypes.Name, "259484228503624441"));
-        claims.Add(new Claim("urn:discord:id", "a58ef677-f7a1-424a-bea4-0d6d8ec95717"));
-
+        if (Context.Request.Headers.TryGetValue(TestHelper.HeaderUserGuid, out var userGuid))
+        {
+            claims.Add(new Claim(ClaimTypes.Name, userGuid[0]));
+        }
+        else
+        {
+            claims.Add(new Claim(ClaimTypes.Name, TestHelper.GuidDiscordAuth));
+        }
 
         var identity = new ClaimsIdentity(claims, AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);

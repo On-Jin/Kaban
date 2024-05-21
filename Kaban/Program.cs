@@ -8,21 +8,27 @@ using Kaban.Mutations;
 using Kaban.Query;
 using Kaban.Services;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication("cookie")
-    .AddCookie("cookie", o =>
+builder.Services.AddAuthentication(options =>
     {
-        o.LoginPath = "/login";
-        o.Cookie.Name = "default";
+        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = "discord";
+    })
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
+    {
+        
     })
     .AddOAuth("discord", o =>
     {
-        o.SignInScheme = "cookie";
+        o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         o.ClientId = SecretHelper.GetSecret(builder, "DISCORD_CLIENT_ID")!;
         o.ClientSecret = SecretHelper.GetSecret(builder, "DISCORD_SECRET")!;
         o.AuthorizationEndpoint = "https://discord.com/oauth2/authorize";
@@ -42,50 +48,19 @@ builder.Services.AddAuthentication("cookie")
 
         o.Events.OnCreatingTicket = async ctx =>
         {
-            var db = ctx.HttpContext.RequestServices.GetRequiredService<AppDbContext>();
-            var userService = ctx.HttpContext.RequestServices.GetRequiredService<IUserService>();
-
-
-            var handlers = ctx.HttpContext.RequestServices.GetRequiredService<IAuthenticationHandlerProvider>();
-            var handler = await handlers.GetHandlerAsync(ctx.HttpContext, "cookie");
-            var authResult = await handler!.AuthenticateAsync();
-
-            User? user;
-            if (!authResult.Succeeded)
-            {
-                user = await userService.Create();
-            }
-            else
-            {
-                // Get Name from Cookie token claims
-                var userId = authResult.Principal!.Identity!.Name!;
-                Console.WriteLine(userId);
-                var id = new Guid(userId!);
-                user = db.Users.Find(id)!;
-            }
-
-            ctx.Identity!.AddClaim(new Claim(ClaimTypes.Name, user.Id.ToString()));
-
-
-            using var request = new HttpRequestMessage(HttpMethod.Get, ctx.Options.UserInformationEndpoint);
+            Console.WriteLine("OnCreatingTicket");
+            var request = new HttpRequestMessage(HttpMethod.Get, ctx.Options.UserInformationEndpoint);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", ctx.AccessToken);
-            using var result = await ctx.Backchannel.SendAsync(request);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var discordUser = await result.Content.ReadFromJsonAsync<JsonElement>();
-            ctx.RunClaimActions(discordUser);
+            var response = await ctx.Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead,
+                ctx.HttpContext.RequestAborted);
+            response.EnsureSuccessStatusCode();
 
-            var discordId = ctx.Principal!.Claims.First(c => c.Type == "urn:discord:id");
-            user.DiscordId = discordId.Value;
-            db.SaveChanges();
+            var user = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+
+            ctx.RunClaimActions(user.RootElement);
         };
-    });
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("visitor", pb => { pb.RequireAuthenticatedUser().AddAuthenticationSchemes("cookie"); })
-    .AddPolicy("discord-enabled", pb =>
-    {
-        pb.RequireAuthenticatedUser()
-            .AddAuthenticationSchemes("discord")
-            .RequireClaim("urn:discord:id");
     });
 
 builder.Services.AddDbContextPool<AppDbContext>(optionsBuilder =>
@@ -97,17 +72,29 @@ builder.Services.AddDbContextPool<AppDbContext>(optionsBuilder =>
 
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddTransient<CustomAuthenticationMiddleware>();
+builder.Services.AddTransient<ShadowUserMiddleware>();
+
 
 builder.Services
     .AddGraphQLServer()
-    .RegisterDbContext<AppDbContext>()
+    .RegisterDbContext<AppDbContext>(DbContextKind.Pooled)
     .AddQueryType<Query>()
     .AddProjections()
     .AddAuthorization()
     // .AddMutationType<Mutation>()
     .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = isDevelopment);
+builder.Services.AddSession();
+builder.Services.AddMvc(o => { o.EnableEndpointRouting = false; });
+builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("shadow", pb => { pb.RequireAuthenticatedUser(); })
+    .AddPolicy("discord-enabled", pb =>
+    {
+        pb.RequireAuthenticatedUser()
+            .AddAuthenticationSchemes("discord")
+            .RequireClaim("urn:discord:id");
+    });
 
 var app = builder.Build();
 
@@ -117,12 +104,12 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.EnsureCreated();
 }
 
-
+app.UseSession();
 app.UseAuthentication();
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
-app.UseMiddleware<CustomAuthenticationMiddleware>();
+app.UseHttpsRedirection();
+app.UseMiddleware<ShadowUserMiddleware>();
+app.UseMvcWithDefaultRoute();
 
 
 app.MapGraphQL();
@@ -149,50 +136,85 @@ app.MapGet("/protected", async (ctx) =>
     }
 
     await ctx.Response.WriteAsync(s);
-}).RequireAuthorization("visitor");
+});
 
-// app.MapGet("/login", async (HttpContext ctx) =>
-// {
-//     var db = ctx.RequestServices.GetRequiredService<AppDbContext>();
-//
-//     User user = new User();
-//     db.Users.Add(user);
-//     db.SaveChanges();
-//
-//     var ci = new ClaimsPrincipal(new[]
-//     {
-//         new ClaimsIdentity(new List<Claim>()
-//             {
-//                 new Claim(ClaimTypes.Name, user.Id.ToString())
-//             },
-//             "cookie")
-//     });
-//     var authProperties = new AuthenticationProperties
-//     {
-//         IsPersistent = true,
-//     };
-//     await ctx.SignInAsync("cookie",
-//         new ClaimsPrincipal(ci),
-//         authProperties);
-//     return "ok";
-// });
-
-app.MapGet("/didi", async (IUserService userService, AppDbContext db, HttpContext ctx) =>
+app.MapGet("/me", async (IUserService userService, AppDbContext db, HttpContext ctx) =>
+{
+    Console.WriteLine("me");
+    var userId = ctx.User.Identity!.Name!;
+    var user = (await userService.Find(userId))!;
+    await ctx.Response.WriteAsJsonAsync(new Me()
     {
-        Console.WriteLine("didi");
-        var userId = ctx.User.Identity!.Name!;
-        var user = (await userService.Find(userId))!;
+        Id = user.Id!,
+        DiscordUsername = user.DiscordUsername,
+        DiscordAvatarUrl = user.DiscordId != null
+            ? $"https://cdn.discordapp.com/avatars/{user.DiscordId}/{user.DiscordAvatar}"
+            : null
+    });
+});
 
-        Console.WriteLine($"{user.Id} {user.DiscordId}");
-        // await ctx.Response.WriteAsync($"{user.Id} {user.DiscordId}");
-        ctx.Response.Redirect("http://localhost:3000");
-    }).RequireAuthorization("discord-enabled")
-    ;
+app.MapGet("/discord-login", async (HttpContext ctx, AppDbContext db, IUserService userService) =>
+{
+    var authenticateResult = await ctx.AuthenticateAsync("discord");
 
-// app.MapGet("/discord-login", async ctx => { await ctx.ChallengeAsync("discord"); });
+    if (!authenticateResult.Succeeded)
+    {
+        await ctx.ChallengeAsync("discord");
+    }
+
+    var claims = authenticateResult.Principal.Claims.ToList();
+
+    // Get the ShadowUserId from the session
+    if (ctx.Session.TryGetValue("ShadowUserId", out var shadowUserId))
+    {
+        var shadowUserIdString = new Guid(shadowUserId).ToString();
+        Console.WriteLine("ShadowUser to NormalUser");
+
+        var discordId = authenticateResult.Principal.Claims.First(c => c.Type == "urn:discord:id");
+        var discordUser = await userService.FindByDiscordId(discordId.Value);
+
+        // If discord User is already linked to a Shadow user, try to mix up Shadow data dans discord data
+        if (discordUser != null)
+        {
+            var discordUsername = authenticateResult.Principal.Claims.First(c => c.Type == "urn:discord:username");
+            var discordAvatar = authenticateResult.Principal.Claims.First(c => c.Type == "urn:discord:avatar");
+            discordUser.DiscordId = discordId.Value;
+            discordUser.DiscordUsername = discordUsername.Value;
+            discordUser.DiscordAvatar = discordAvatar.Value;
+            db.SaveChanges();
+            
+            claims.Add(new Claim(ClaimTypes.Name, discordUser.Id.ToString()));
+            
+            // delete user
+            await userService.DeleteShadowUser(shadowUserIdString);
+        }
+        // Otherwise, add additional discord data to Shadow user
+        else
+        {
+            var user = (await userService.Find(shadowUserIdString))!;
+            var discordUsername = authenticateResult.Principal.Claims.First(c => c.Type == "urn:discord:username");
+            var discordAvatar = authenticateResult.Principal.Claims.First(c => c.Type == "urn:discord:avatar");
+            user.DiscordId = discordId.Value;
+            user.DiscordUsername = discordUsername.Value;
+            user.DiscordAvatar = discordAvatar.Value;
+            db.SaveChanges();
+            claims.Add(new Claim(ClaimTypes.Name, shadowUserIdString));
+        }
+
+
+        ctx.Session.Remove("ShadowUserId");
+    }
+
+    // Sign in the user with the merged claims
+    await ctx.SignInAsync(
+        CookieAuthenticationDefaults.AuthenticationScheme,
+        new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)),
+        new AuthenticationProperties { IsPersistent = true });
+
+    ctx.Response.Redirect("/");
+});
 
 app.MapGet("/logout", async ctx => { await ctx.SignOutAsync(); });
-
 
 app.Run();
 
