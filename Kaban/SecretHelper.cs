@@ -4,8 +4,23 @@ namespace Kaban;
 
 public static class SecretHelper
 {
-    public static string? GetSecret(string key)
+    // public static string? GetVar(IHostApplicationBuilder builder, string key)
+    // {
+    //     var secret = GetSecret(builder, key);
+    //     if (secret != null)
+    //         return secret;
+    //
+    //     var env = Environment.GetEnvironmentVariable(key);
+    //     return env;
+    // }
+
+    public static string? GetSecret(IHostApplicationBuilder builder, string key)
     {
+        var movieApiKey = builder.Configuration[key];
+
+        if (movieApiKey != null)
+            return movieApiKey;
+
         const string dockerSecretPath = "/run/secrets/";
         if (Directory.Exists(dockerSecretPath))
         {
@@ -20,7 +35,7 @@ public static class SecretHelper
                 }
             }
         }
-      
+
         return null;
     }
 }

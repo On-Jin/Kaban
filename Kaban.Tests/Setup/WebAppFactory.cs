@@ -1,8 +1,10 @@
 ﻿using System.Data.Common;
 using Kaban.Data;
 using Kaban.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using Respawn;
@@ -25,6 +27,14 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
             "ConnectionStrings:KabanDbConnectionString",
             _container.GetConnectionString());
 
+        builder.ConfigureTestServices(services =>
+        {
+            services.Configure<TestAuthHandlerOptions>(options => options.DefaultUserId = "1");
+
+            services.AddAuthentication(TestAuthHandler.AuthenticationScheme)
+                .AddScheme<TestAuthHandlerOptions, TestAuthHandler>(TestAuthHandler.AuthenticationScheme,
+                    options => { });
+        });
         builder.ConfigureServices(services =>
         {
             var sp = services.BuildServiceProvider();
@@ -83,6 +93,12 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
             ]
         };
         db.Authors.Add(author);
+
+        var user = new User()
+        {
+            Id = new Guid("458ef677-f7a1-424a-bea4-0d6d8ec95717"),
+            DiscordId = "159484228503624441"
+        };
         await db.SaveChangesAsync();
     }
 
