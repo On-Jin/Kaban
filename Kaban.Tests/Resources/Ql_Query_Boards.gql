@@ -1,0 +1,21 @@
+query {
+  boards {
+    id
+    name
+    columns {
+      id
+      name
+      mainTasks {
+        description
+        id
+        status
+        title
+        subTasks {
+          id
+          isCompleted
+          title
+        }
+      }
+    }
+  }
+}

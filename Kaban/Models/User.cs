@@ -12,4 +12,6 @@ public class User
     public string? DiscordAvatar { get; set; } = null;
 
     public string? DiscordUsername { get; set; } = null;
+
+    public List<Board> Boards { get; set; } = [];
 }

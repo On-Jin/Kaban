@@ -13,5 +13,14 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fbc9b84f_002D19e1_002D4ca6_002D95de_002D126612f0ad2e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Me_Discord" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.MeTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.Tests.Test1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.Tests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestBoard.GraphQL_AddBoard&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestBoard.GraphQL_DeleteBoard&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestBoard.GraphQL_PatchBoard&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.Schema&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.GraphQL&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.Db&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.WebApp&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

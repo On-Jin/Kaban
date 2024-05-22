@@ -3,6 +3,7 @@ using HotChocolate.Authorization;
 using Kaban.Data;
 using Kaban.Models;
 using Kaban.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kaban.Query;
 
@@ -52,5 +53,25 @@ public class Query
                 ? $"https://cdn.discordapp.com/avatars/{user.DiscordId}/{user.DiscordAvatar}"
                 : null
         };
+    }
+
+    [Authorize]
+    public async Task<List<Board>> GetBoards(
+        [Service] AppDbContext db,
+        [Service] IHttpContextAccessor httpContext,
+        [Service] IUserService userService
+    )
+    {
+        var user = (await userService.Find(httpContext.HttpContext.User.Identity.Name))!;
+
+        await db.Entry(user)
+            .Collection(u => u.Boards)
+            .Query()
+            .Include(b => b.Columns)
+            .ThenInclude(c => c.MainTasks)
+            .ThenInclude(m => m.SubTasks)
+            .LoadAsync();
+
+        return user.Boards.ToList();
     }
 }

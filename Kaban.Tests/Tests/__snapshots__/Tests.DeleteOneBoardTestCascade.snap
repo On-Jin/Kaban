@@ -1,0 +1,240 @@
+﻿{
+  "Id": "158ef677-f7a1-424a-bea4-0d6d8ec95717",
+  "DiscordId": null,
+  "DiscordAvatar": null,
+  "DiscordUsername": null,
+  "Boards": [
+    {
+      "Id": 2,
+      "Name": "Marketing Plan",
+      "Columns": [
+        {
+          "Id": 4,
+          "Name": "Todo",
+          "MainTasks": [
+            {
+              "Id": 18,
+              "Title": "Plan Product Hunt launch",
+              "Description": "",
+              "Status": 0,
+              "SubTasks": [
+                {
+                  "Id": 37,
+                  "Title": "Find hunter",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 18
+                },
+                {
+                  "Id": 38,
+                  "Title": "Gather assets",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 18
+                },
+                {
+                  "Id": 39,
+                  "Title": "Draft product page",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 18
+                },
+                {
+                  "Id": 40,
+                  "Title": "Notify customers",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 18
+                },
+                {
+                  "Id": 41,
+                  "Title": "Notify network",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 18
+                },
+                {
+                  "Id": 42,
+                  "Title": "Launch!",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 18
+                }
+              ],
+              "Column": null,
+              "ColumnId": 4
+            },
+            {
+              "Id": 19,
+              "Title": "Share on Show HN",
+              "Description": "",
+              "Status": 0,
+              "SubTasks": [
+                {
+                  "Id": 43,
+                  "Title": "Draft out HN post",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 19
+                },
+                {
+                  "Id": 44,
+                  "Title": "Get feedback and refine",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 19
+                },
+                {
+                  "Id": 45,
+                  "Title": "Publish post",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 19
+                }
+              ],
+              "Column": null,
+              "ColumnId": 4
+            },
+            {
+              "Id": 20,
+              "Title": "Write launch article to publish on multiple channels",
+              "Description": "",
+              "Status": 0,
+              "SubTasks": [
+                {
+                  "Id": 46,
+                  "Title": "Write article",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 20
+                },
+                {
+                  "Id": 47,
+                  "Title": "Publish on LinkedIn",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 20
+                },
+                {
+                  "Id": 48,
+                  "Title": "Publish on Inndie Hackers",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 20
+                },
+                {
+                  "Id": 49,
+                  "Title": "Publish on Medium",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 20
+                }
+              ],
+              "Column": null,
+              "ColumnId": 4
+            }
+          ],
+          "Board": null,
+          "BoardId": 2
+        },
+        {
+          "Id": 5,
+          "Name": "Doing",
+          "MainTasks": [],
+          "Board": null,
+          "BoardId": 2
+        },
+        {
+          "Id": 6,
+          "Name": "Done",
+          "MainTasks": [],
+          "Board": null,
+          "BoardId": 2
+        }
+      ]
+    },
+    {
+      "Id": 3,
+      "Name": "Roadmap",
+      "Columns": [
+        {
+          "Id": 7,
+          "Name": "Now",
+          "MainTasks": [
+            {
+              "Id": 21,
+              "Title": "Launch version one",
+              "Description": "",
+              "Status": 0,
+              "SubTasks": [
+                {
+                  "Id": 50,
+                  "Title": "Launch privately to our waitlist",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 21
+                },
+                {
+                  "Id": 51,
+                  "Title": "Launch publicly on PH, HN, etc.",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 21
+                }
+              ],
+              "Column": null,
+              "ColumnId": 7
+            },
+            {
+              "Id": 22,
+              "Title": "Review early feedback and plan next steps for roadmap",
+              "Description": "Beyond the initial launch, we\u0027re keeping the initial roadmap completely empty. This meeting will help us plan out our next steps based on actual customer feedback.",
+              "Status": 0,
+              "SubTasks": [
+                {
+                  "Id": 52,
+                  "Title": "Interview 10 customers",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 22
+                },
+                {
+                  "Id": 53,
+                  "Title": "Review common customer pain points and suggestions",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 22
+                },
+                {
+                  "Id": 54,
+                  "Title": "Outline next steps for our roadmap",
+                  "IsCompleted": false,
+                  "MainTask": null,
+                  "MainTaskId": 22
+                }
+              ],
+              "Column": null,
+              "ColumnId": 7
+            }
+          ],
+          "Board": null,
+          "BoardId": 3
+        },
+        {
+          "Id": 8,
+          "Name": "Next",
+          "MainTasks": [],
+          "Board": null,
+          "BoardId": 3
+        },
+        {
+          "Id": 9,
+          "Name": "Later",
+          "MainTasks": [],
+          "Board": null,
+          "BoardId": 3
+        }
+      ]
+    }
+  ]
+}

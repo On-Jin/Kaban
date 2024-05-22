@@ -1,0 +1,23 @@
+mutation {
+  patchBoard(input: TEST_INPUT) {
+    board {
+      id
+      name
+      columns {
+        id
+        name
+        mainTasks {
+          description
+          id
+          status
+          title
+          subTasks {
+            id
+            isCompleted
+            title
+          }
+        }
+      }
+    }
+  }
+}

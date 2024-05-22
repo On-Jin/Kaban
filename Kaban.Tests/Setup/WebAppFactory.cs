@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using Respawn;
@@ -55,6 +56,7 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
     public async Task ResetDatabaseAsync()
     {
         await _respawner.ResetAsync(_dbConnection);
+        await ReseedIdentityColumnsAsync();
         await PopulateDb();
     }
 
@@ -74,6 +76,21 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
             DbAdapter = DbAdapter.Postgres,
             SchemasToInclude = ["public"]
         });
+    }
+
+    private async Task ReseedIdentityColumnsAsync()
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var tablesToReseed = new[] { "Boards", "Columns", "MainTasks", "SubTasks" };
+
+        foreach (var tableName in tablesToReseed)
+        {
+#pragma warning disable EF1002
+            await db.Database.ExecuteSqlRawAsync($"TRUNCATE TABLE \"{tableName}\" RESTART IDENTITY CASCADE;");
+#pragma warning restore EF1002
+        }
     }
 
     private async Task PopulateDb()

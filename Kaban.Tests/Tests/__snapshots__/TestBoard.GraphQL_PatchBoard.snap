@@ -1,0 +1,11 @@
+﻿{
+  "data": {
+    "patchBoard": {
+      "board": {
+        "id": 1,
+        "name": "New Name Example!",
+        "columns": []
+      }
+    }
+  }
+}

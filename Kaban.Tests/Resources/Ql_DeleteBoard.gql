@@ -1,0 +1,7 @@
+mutation {
+    deleteBoard(input: TEST_INPUT) {
+        board {
+          id
+        }
+    }
+}

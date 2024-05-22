@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Text.Json;
 using Kaban;
 using Kaban.Data;
+using Kaban.GraphQL.Boards;
+using Kaban.GraphQL.MainTasks;
 using Kaban.Models;
 using Kaban.Mutations;
 using Kaban.Query;
@@ -81,7 +83,9 @@ builder.Services
     .AddQueryType<Query>()
     .AddProjections()
     .AddAuthorization()
-    // .AddMutationType<Mutation>()
+    .AddMutationType<Mutation>()
+    .AddType<MainTaskType>()
+    .AddType<BoardType>()
     .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = isDevelopment);
 builder.Services.AddSession();
 builder.Services.AddMvc(o => { o.EnableEndpointRouting = false; });

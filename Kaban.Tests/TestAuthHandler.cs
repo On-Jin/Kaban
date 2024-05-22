@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -8,6 +10,9 @@ namespace Kaban.Tests;
 
 public static class TestHelper
 {
+    public static JsonSerializerOptions JsonSerializerOptions = new()
+        { ReferenceHandler = ReferenceHandler.IgnoreCycles, WriteIndented = true};
+
     public const string GuidDiscordAuth = "458ef677-f7a1-424a-bea4-0d6d8ec95717";
     public const string GuidShadowAuth = "158ef677-f7a1-424a-bea4-0d6d8ec95717";
     public const string HeaderUserGuid = "UserGuid";
@@ -40,7 +45,6 @@ public class TestAuthHandler : AuthenticationHandler<TestAuthHandlerOptions>
 
         var claims = new List<Claim>
         {
-            new Claim("urn:discord:id", "259484228503624441")
         };
 
         if (Context.Request.Headers.TryGetValue(TestHelper.HeaderUserGuid, out var userGuid))
@@ -50,6 +54,7 @@ public class TestAuthHandler : AuthenticationHandler<TestAuthHandlerOptions>
         else
         {
             claims.Add(new Claim(ClaimTypes.Name, TestHelper.GuidDiscordAuth));
+            claims.Add(new Claim("urn:discord:id", "259484228503624441"));
         }
 
         var identity = new ClaimsIdentity(claims, AuthenticationScheme);

@@ -3,6 +3,7 @@ using System;
 using Kaban.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kaban.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240522134435_AddKabanModelsAndRelations")]
+    partial class AddKabanModelsAndRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,7 +105,7 @@ namespace Kaban.Migrations
 
                     b.HasIndex("BoardId");
 
-                    b.ToTable("Columns");
+                    b.ToTable("Column");
                 });
 
             modelBuilder.Entity("Kaban.Models.MainTask", b =>
@@ -131,7 +134,7 @@ namespace Kaban.Migrations
 
                     b.HasIndex("ColumnId");
 
-                    b.ToTable("MainTasks");
+                    b.ToTable("MainTask");
                 });
 
             modelBuilder.Entity("Kaban.Models.SubTask", b =>
@@ -156,7 +159,7 @@ namespace Kaban.Migrations
 
                     b.HasIndex("MainTaskId");
 
-                    b.ToTable("SubTasks");
+                    b.ToTable("SubTask");
                 });
 
             modelBuilder.Entity("Kaban.Models.User", b =>
