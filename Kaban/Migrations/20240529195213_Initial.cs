@@ -7,11 +7,58 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kaban.Migrations
 {
     /// <inheritdoc />
-    public partial class AddKabanModelsAndRelations : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Authors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Authors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    DiscordId = table.Column<string>(type: "text", nullable: true),
+                    DiscordAvatar = table.Column<string>(type: "text", nullable: true),
+                    DiscordUsername = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Books",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    AuthorId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Books", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Books_Authors_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Authors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Boards",
                 columns: table => new
@@ -33,7 +80,7 @@ namespace Kaban.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Column",
+                name: "Columns",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -43,9 +90,9 @@ namespace Kaban.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Column", x => x.Id);
+                    table.PrimaryKey("PK_Columns", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Column_Boards_BoardId",
+                        name: "FK_Columns_Boards_BoardId",
                         column: x => x.BoardId,
                         principalTable: "Boards",
                         principalColumn: "Id",
@@ -53,7 +100,7 @@ namespace Kaban.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MainTask",
+                name: "MainTasks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -65,17 +112,17 @@ namespace Kaban.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MainTask", x => x.Id);
+                    table.PrimaryKey("PK_MainTasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MainTask_Column_ColumnId",
+                        name: "FK_MainTasks_Columns_ColumnId",
                         column: x => x.ColumnId,
-                        principalTable: "Column",
+                        principalTable: "Columns",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubTask",
+                name: "SubTasks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -86,11 +133,11 @@ namespace Kaban.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubTask", x => x.Id);
+                    table.PrimaryKey("PK_SubTasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubTask_MainTask_MainTaskId",
+                        name: "FK_SubTasks_MainTasks_MainTaskId",
                         column: x => x.MainTaskId,
-                        principalTable: "MainTask",
+                        principalTable: "MainTasks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -101,18 +148,23 @@ namespace Kaban.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Column_BoardId",
-                table: "Column",
+                name: "IX_Books_AuthorId",
+                table: "Books",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Columns_BoardId",
+                table: "Columns",
                 column: "BoardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MainTask_ColumnId",
-                table: "MainTask",
+                name: "IX_MainTasks_ColumnId",
+                table: "MainTasks",
                 column: "ColumnId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubTask_MainTaskId",
-                table: "SubTask",
+                name: "IX_SubTasks_MainTaskId",
+                table: "SubTasks",
                 column: "MainTaskId");
         }
 
@@ -120,16 +172,25 @@ namespace Kaban.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "SubTask");
+                name: "Books");
 
             migrationBuilder.DropTable(
-                name: "MainTask");
+                name: "SubTasks");
 
             migrationBuilder.DropTable(
-                name: "Column");
+                name: "Authors");
+
+            migrationBuilder.DropTable(
+                name: "MainTasks");
+
+            migrationBuilder.DropTable(
+                name: "Columns");
 
             migrationBuilder.DropTable(
                 name: "Boards");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

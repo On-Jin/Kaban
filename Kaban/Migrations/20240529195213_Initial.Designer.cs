@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kaban.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240522134435_AddKabanModelsAndRelations")]
-    partial class AddKabanModelsAndRelations
+    [Migration("20240529195213_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,7 +105,7 @@ namespace Kaban.Migrations
 
                     b.HasIndex("BoardId");
 
-                    b.ToTable("Column");
+                    b.ToTable("Columns");
                 });
 
             modelBuilder.Entity("Kaban.Models.MainTask", b =>
@@ -134,7 +134,7 @@ namespace Kaban.Migrations
 
                     b.HasIndex("ColumnId");
 
-                    b.ToTable("MainTask");
+                    b.ToTable("MainTasks");
                 });
 
             modelBuilder.Entity("Kaban.Models.SubTask", b =>
@@ -159,7 +159,7 @@ namespace Kaban.Migrations
 
                     b.HasIndex("MainTaskId");
 
-                    b.ToTable("SubTask");
+                    b.ToTable("SubTasks");
                 });
 
             modelBuilder.Entity("Kaban.Models.User", b =>
