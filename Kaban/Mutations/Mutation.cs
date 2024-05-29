@@ -16,6 +16,24 @@ public class Mutation
     #region Board
 
     [Authorize]
+    public async Task<BoardsPayload> PopulateMe(
+        AddBoardInput input,
+        [Service] AppDbContext context,
+        [Service] IHttpContextAccessor httpContext,
+        [Service] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        var user = (await userService.Find(httpContext.HttpContext.User.Identity.Name))!;
+
+        var boards = await GenerateHelper.GenerateDefaultKabanBoards();
+        user.Boards.AddRange(boards);
+
+        await context.SaveChangesAsync(cancellationToken);
+
+        return new BoardsPayload(boards);
+    }
+
+    [Authorize]
     public async Task<BoardPayload> AddBoard(
         AddBoardInput input,
         [Service] AppDbContext context,

@@ -43,6 +43,7 @@ public class Query
     [Authorize]
     public async Task<Me> Me([Service] IHttpContextAccessor httpContext, [Service] IUserService userService)
     {
+        Console.WriteLine("Me!");
         var user = (await userService.Find(httpContext.HttpContext.User.Identity.Name))!;
 
         return new Me()

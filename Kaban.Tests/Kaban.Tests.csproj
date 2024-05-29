@@ -25,7 +25,7 @@
     <ItemGroup>
         <Content Include="..\default.json">
           <Link>default.json</Link>
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>

@@ -24,10 +24,7 @@ builder.Services.AddAuthentication(options =>
         options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = "discord";
     })
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
-    {
-        
-    })
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o => { o.Cookie.HttpOnly = false; })
     .AddOAuth("discord", o =>
     {
         o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -186,9 +183,9 @@ app.MapGet("/discord-login", async (HttpContext ctx, AppDbContext db, IUserServi
             discordUser.DiscordUsername = discordUsername.Value;
             discordUser.DiscordAvatar = discordAvatar.Value;
             db.SaveChanges();
-            
+
             claims.Add(new Claim(ClaimTypes.Name, discordUser.Id.ToString()));
-            
+
             // delete user
             await userService.DeleteShadowUser(shadowUserIdString);
         }
