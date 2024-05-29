@@ -27,9 +27,8 @@
         <Content Include="..\.dockerignore">
             <Link>.dockerignore</Link>
         </Content>
-        <Content Include="..\default.json">
-            <Link>default.json</Link>
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <Content Update="default.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 
