@@ -16,10 +16,10 @@ public static class SecretHelper
 
     public static string? GetSecret(IHostApplicationBuilder builder, string key)
     {
-        var movieApiKey = builder.Configuration[key];
+        var secret = builder.Configuration[key];
 
-        if (movieApiKey != null)
-            return movieApiKey;
+        if (secret != null)
+            return secret;
 
         const string dockerSecretPath = "/run/secrets/";
         if (Directory.Exists(dockerSecretPath))

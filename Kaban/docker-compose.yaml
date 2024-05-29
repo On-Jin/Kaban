@@ -8,6 +8,8 @@ services:
       - 7001:7001
     secrets:
       - KABANDBCONNECTIONSTRING
+      - DISCORD_CLIENT_ID
+      - DISCORD_SECRET
 
 networks:
   default:
@@ -17,3 +19,7 @@ networks:
 secrets:
   KABANDBCONNECTIONSTRING:
     environment: "KABANDBCONNECTIONSTRING"
+  DISCORD_CLIENT_ID:
+    environment: "DISCORD_CLIENT_ID"
+  DISCORD_SECRET:
+    environment: "DISCORD_SECRET"

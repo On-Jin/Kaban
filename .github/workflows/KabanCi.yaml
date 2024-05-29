@@ -66,12 +66,14 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         env:
           KABANDBCONNECTIONSTRING: ${{ secrets.KABANDBCONNECTIONSTRING }}
+          DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
+          DISCORD_SECRET: ${{ secrets.DISCORD_SECRET }}
           SHA: ${{ github.sha }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          envs: SHA,KABANDBCONNECTIONSTRING
+          envs: SHA,KABANDBCONNECTIONSTRING,DISCORD_CLIENT_ID,DISCORD_SECRET
           debug: true
           script: |
             docker compose -f ${{ secrets.APP_PATH }}/docker-compose.yaml up -d
