@@ -131,6 +131,18 @@ public partial class TestBoard
             .Serialize(JsonSerializer.Deserialize<object>(jsonWrapped), TestHelper.JsonSerializerOptions);
     }
 
+
+    [Fact]
+    public async Task GraphQL_QueryBoard()
+    {
+        await _resetDatabase();
+        using var scope = _factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await GenerateKabanBoardToShadowUser(db);
+
+        (await GetQueryBoardsString()).MatchSnapshot();
+    }
+
     [Fact]
     public async Task GraphQL_AddBoard()
     {
@@ -145,6 +157,8 @@ public partial class TestBoard
         _testOutputHelper.WriteLine(jsonWrapped);
 
         jsonWrapped.MatchSnapshot();
+
+        (await GetQueryBoardsString()).MatchSnapshot(SnapshotNameExtension.Create("FullBoardQuery"));
     }
 
     [Fact]
@@ -166,16 +180,8 @@ public partial class TestBoard
         }
 
         {
-            {
-                await DeleteBoard(_httpClientShadow, new DeleteBoardInput(id));
-            }
-            {
-                var response = await QueryBoards(_httpClientShadow);
-                string jsonWrapped = await response.Content.ReadAsStringAsync();
-                JsonSerializer
-                    .Serialize(JsonSerializer.Deserialize<object>(jsonWrapped), TestHelper.JsonSerializerOptions)
-                    .MatchSnapshot();
-            }
+            await DeleteBoard(_httpClientShadow, new DeleteBoardInput(id));
+            (await GetQueryBoardsString()).MatchSnapshot();
         }
     }
 

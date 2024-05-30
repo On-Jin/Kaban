@@ -1,17 +1,14 @@
 ﻿using System.Net;
-using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 using FluentAssertions;
 using Kaban.Data;
-using Kaban.GraphQL.Boards;
 using Kaban.GraphQL.Columns;
-using Kaban.Tests.Setup;
+using Kaban.Models;
+using Kaban.Models.Dto;
 using Microsoft.Extensions.DependencyInjection;
 using Snapshooter;
 using Snapshooter.Xunit;
-using Xunit.Abstractions;
 
 namespace Kaban.Tests.Tests;
 
@@ -77,6 +74,37 @@ public partial class TestBoard
         (await GetQueryBoardsString()).MatchSnapshot(SnapshotNameExtension.Create("FullBoardQuery"));
     }
 
+
+    [Fact]
+    public async Task GraphQL_AddColumn_WithMainTasks()
+    {
+        await _resetDatabase();
+        using var scope = _factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await GenerateKabanBoardToShadowUser(db);
+
+        {
+            HttpResponseMessage response = await AddColumn(_httpClientShadow, new AddColumnInput(1, "Another Column",
+                new List<MainTask>()
+                {
+                    new MainTask()
+                    {
+                        Description = "",
+                        Order = 1,
+                    }
+                }));
+
+            string jsonWrapped = await response.Content.ReadAsStringAsync();
+            _testOutputHelper.WriteLine(jsonWrapped);
+
+            JsonSerializer
+                .Serialize(JsonSerializer.Deserialize<object>(jsonWrapped), TestHelper.JsonSerializerOptions)
+                .MatchSnapshot();
+        }
+        (await GetQueryBoardsString()).MatchSnapshot(SnapshotNameExtension.Create("FullBoardQuery"));
+    }
+
+
     [Fact]
     public async Task GraphQL_DeleteColumn()
     {
@@ -96,13 +124,13 @@ public partial class TestBoard
         }
 
         {
-            var response = await DeleteColumn(_httpClientShadow, new DeleteColumnInput(id));
-            string jsonWrapped = await response.Content.ReadAsStringAsync();
-            _testOutputHelper.WriteLine(jsonWrapped);
-            JsonSerializer
-                .Serialize(JsonSerializer.Deserialize<object>(jsonWrapped), TestHelper.JsonSerializerOptions)
-                .MatchSnapshot();
-            (await GetQueryBoardsString()).MatchSnapshot(SnapshotNameExtension.Create("FullBoardQuery"));
+            await DeleteColumn(_httpClientShadow, new DeleteColumnInput(id));
+
+
+            string jsonWrapped = await GetQueryBoardsString();
+            var boardsDto = JsonNode.Parse(jsonWrapped)!.AsObject()["data"]["boards"].AsArray()
+                .Deserialize<List<BoardDto>>();
+            boardsDto[0].Columns.Should().NotContain(c => c.Id == id);
         }
     }
 

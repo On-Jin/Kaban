@@ -1,3 +1,5 @@
-﻿namespace Kaban.GraphQL.Columns;
+﻿using Kaban.Models;
 
-public record AddColumnInput(int BoardId, string Name);
+namespace Kaban.GraphQL.Columns;
+
+public record AddColumnInput(int BoardId, string Name, List<MainTask>? MainTasks = null);

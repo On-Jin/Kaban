@@ -2,6 +2,7 @@
 using HotChocolate.Authorization;
 using Kaban.Data;
 using Kaban.Models;
+using Kaban.Models.Dto;
 using Kaban.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -57,7 +58,7 @@ public class Query
     }
 
     [Authorize]
-    public async Task<List<Board>> GetBoards(
+    public async Task<List<BoardDto>> GetBoards(
         [Service] AppDbContext db,
         [Service] IHttpContextAccessor httpContext,
         [Service] IUserService userService
@@ -65,14 +66,38 @@ public class Query
     {
         var user = (await userService.Find(httpContext.HttpContext.User.Identity.Name))!;
 
-        await db.Entry(user)
+        var boardsDto = await db.Entry(user)
             .Collection(u => u.Boards)
             .Query()
             .Include(b => b.Columns)
             .ThenInclude(c => c.MainTasks)
             .ThenInclude(m => m.SubTasks)
-            .LoadAsync();
+            .Select(board =>
+                new BoardDto()
+                {
+                    Id = board.Id,
+                    Name = board.Name,
+                    Columns = board.Columns.Select(column => new ColumnDto
+                    {
+                        Id = column.Id,
+                        Name = column.Name,
+                        MainTasks = column.MainTasks.Select(mainTask => new MainTaskDto
+                        {
+                            Id = mainTask.Id,
+                            Title = mainTask.Title,
+                            Description = mainTask.Description,
+                            Status = column.Name,
+                            SubTasks = mainTask.SubTasks.Select(subTask => new SubTaskDto
+                            {
+                                Id = subTask.Id,
+                                Title = subTask.Title,
+                                IsCompleted = subTask.IsCompleted,
+                            }).ToList()
+                        }).ToList()
+                    }).ToList()
+                })
+            .ToListAsync();
 
-        return user.Boards.ToList();
+        return boardsDto;
     }
 }

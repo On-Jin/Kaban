@@ -514,6 +514,11 @@
             "mainTasks": []
           }
         ]
+      },
+      {
+        "id": 4,
+        "name": "Example",
+        "columns": []
       }
     ]
   }

@@ -6,6 +6,7 @@ using Kaban.GraphQL.MainTasks;
 using Kaban.GraphQL.Payloads;
 using Kaban.GraphQL.SubTasks;
 using Kaban.Models;
+using Kaban.Models.Dto;
 using Kaban.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -52,7 +53,7 @@ public class Mutation
 
         await context.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(newBoard);
+        return new BoardPayload(Mapper.MapToBoardDto(newBoard));
     }
 
     [Authorize]
@@ -75,7 +76,7 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(board);
+        return new BoardPayload(Mapper.MapToBoardDto(board));
     }
 
     [Authorize]
@@ -97,7 +98,7 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(board);
+        return new BoardPayload(Mapper.MapToBoardDto(board));
     }
 
     #endregion
@@ -114,7 +115,8 @@ public class Mutation
     {
         var user = (await userService.Find(httpContext.HttpContext.User.Identity.Name))!;
 
-        var board = db.Boards.Include(b => b.User).SingleOrDefault(b => b.Id == input.BoardId && b.UserId == user.Id);
+        var board = db.Boards.Include(b => b.User).Include(board => board.Columns)
+            .SingleOrDefault(b => b.Id == input.BoardId && b.UserId == user.Id);
 
 
         if (board == null)
@@ -127,15 +129,18 @@ public class Mutation
             throw new GraphQLException(new Error("Unauthorized.", ErrorCode.Unauthorized));
         }
 
+
         var newColumn = new Column()
         {
-            Name = input.Name
+            Name = input.Name,
+            Order = board.Columns.Count,
+            MainTasks = input.MainTasks ?? []
         };
         board.Columns.Add(newColumn);
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new ColumnPayload(newColumn);
+        return new ColumnPayload(Mapper.MapToColumnDto(newColumn));
     }
 
     [Authorize]
@@ -170,7 +175,7 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new ColumnPayload(column);
+        return new ColumnPayload(Mapper.MapToColumnDto(column));
     }
 
     [Authorize]
@@ -202,7 +207,7 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new ColumnPayload(column);
+        return new ColumnPayload(Mapper.MapToColumnDto(column));
     }
 
     #endregion
@@ -238,13 +243,12 @@ public class Mutation
         {
             Title = input.Title,
             Description = input.Description ?? "",
-            Status = TaskState.Todo,
         };
         column.MainTasks.Add(newMainTask);
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(column.Board);
+        return new BoardPayload(Mapper.MapToBoardDto(column.Board));
     }
 
     [Authorize]
@@ -277,12 +281,12 @@ public class Mutation
             mainTask.Title = input.Title;
         if (input.Description != null)
             mainTask.Description = input.Description;
-        if (input.Status.HasValue)
-            mainTask.Status = input.Status.Value;
+        if (input.Status != null)
+            ; // TODO
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(mainTask.Column.Board);
+        return new BoardPayload(Mapper.MapToBoardDto(mainTask.Column.Board));
     }
 
     [Authorize]
@@ -315,7 +319,7 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(mainTask.Column.Board);
+        return new BoardPayload(Mapper.MapToBoardDto(mainTask.Column.Board));
     }
 
     #endregion
@@ -357,7 +361,7 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(mainTask.Column.Board);
+        return new BoardPayload(Mapper.MapToBoardDto(mainTask.Column.Board));
     }
 
     [Authorize]
@@ -394,7 +398,7 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(subTask.MainTask.Column.Board);
+        return new BoardPayload(Mapper.MapToBoardDto(subTask.MainTask.Column.Board));
     }
 
     [Authorize]
@@ -428,7 +432,7 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(subTask.MainTask.Column.Board);
+        return new BoardPayload(Mapper.MapToBoardDto(subTask.MainTask.Column.Board));
     }
 
     #endregion

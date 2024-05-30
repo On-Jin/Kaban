@@ -24,5 +24,6 @@
     &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.WebApp&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestBoard.GraphQL_AddColumn&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestBoard.GraphQL_DeleteColumn&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestBoard.GraphQL_QueryBoard&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

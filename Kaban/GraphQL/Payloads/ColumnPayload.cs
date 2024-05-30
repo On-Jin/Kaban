@@ -1,5 +1,6 @@
 ﻿using Kaban.Models;
+using Kaban.Models.Dto;
 
 namespace Kaban.GraphQL.Payloads;
 
-public record ColumnPayload(Column Column);
+public record ColumnPayload(ColumnDto Column);

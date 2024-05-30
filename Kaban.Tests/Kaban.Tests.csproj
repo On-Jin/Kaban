@@ -23,8 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\default.json">
-          <Link>default.json</Link>
+        <Content Include="..\olddefault.json">
+          <Link>olddefault.json</Link>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
@@ -32,16 +32,7 @@
 
     <ItemGroup>
         <None Include="Resources/**">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Resources\Ql_PatchBoard.gql">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Resources\Ql_AddColumn.gql">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Resources\Ql_DeleteColumn.gql">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
 

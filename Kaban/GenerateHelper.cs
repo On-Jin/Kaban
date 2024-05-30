@@ -32,14 +32,6 @@ public static class GenerateHelper
                         Title = taskNode["title"].ToString(),
                         Description = taskNode["description"].ToString(),
                     };
-                    mainTask.Status = taskNode["status"].ToString() switch
-                    {
-                        "Todo" => TaskState.Todo,
-                        "Doing" => TaskState.Doing,
-                        "Done" => TaskState.Done,
-                        "" => TaskState.Todo,
-                        _ => throw new NotImplementedException()
-                    };
                     foreach (var subTaskNode in taskNode["subtasks"].AsArray())
                     {
                         var subTask = new SubTask()
