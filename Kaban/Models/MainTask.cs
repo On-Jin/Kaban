@@ -14,6 +14,9 @@ public class MainTask
     public int Id { get; set; }
     
     [Required]
+    public int Order { get; set; }
+    
+    [Required]
     public string Title { get; set; } = "Task Name";
 
     public string Description { get; set; } = "";

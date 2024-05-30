@@ -8,13 +8,14 @@ using Kaban.Data;
 using Kaban.GraphQL.Boards;
 using Kaban.Tests.Setup;
 using Microsoft.Extensions.DependencyInjection;
+using Snapshooter;
 using Snapshooter.Xunit;
 using Xunit.Abstractions;
 
 namespace Kaban.Tests.Tests;
 
 [Collection(nameof(WebAppCollectionFixture))]
-public class TestBoard
+public partial class TestBoard
 {
     private readonly ITestOutputHelper _testOutputHelper;
     private readonly JsonSerializerOptions _jsonOptionInputGraphQl;
@@ -120,6 +121,14 @@ public class TestBoard
         var boards = await GenerateHelper.GenerateDefaultKabanBoards();
         user.Boards.AddRange(boards);
         await db.SaveChangesAsync();
+    }
+
+    private async Task<string> GetQueryBoardsString()
+    {
+        var response = await QueryBoards(_httpClientShadow);
+        string jsonWrapped = await response.Content.ReadAsStringAsync();
+        return JsonSerializer
+            .Serialize(JsonSerializer.Deserialize<object>(jsonWrapped), TestHelper.JsonSerializerOptions);
     }
 
     [Fact]

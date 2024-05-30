@@ -1,0 +1,17 @@
+﻿{
+  "data": {
+    "addColumn": {
+      "board": {
+        "id": 1,
+        "name": "Platform Launch",
+        "columns": [
+          {
+            "id": 10,
+            "name": "Example",
+            "mainTasks": []
+          }
+        ]
+      }
+    }
+  }
+}
