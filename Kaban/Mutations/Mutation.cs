@@ -3,6 +3,7 @@ using Kaban.GraphQL;
 using Kaban.GraphQL.Boards;
 using Kaban.GraphQL.Columns;
 using Kaban.GraphQL.MainTasks;
+using Kaban.GraphQL.Payloads;
 using Kaban.GraphQL.SubTasks;
 using Kaban.Models;
 using Kaban.Services;
@@ -104,7 +105,7 @@ public class Mutation
     #region Column
 
     [Authorize]
-    public async Task<BoardPayload> AddColumn(
+    public async Task<ColumnPayload> AddColumn(
         AddColumnInput input,
         [Service] AppDbContext db,
         [Service] IHttpContextAccessor httpContext,
@@ -134,11 +135,11 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(board);
+        return new ColumnPayload(newColumn);
     }
 
     [Authorize]
-    public async Task<BoardPayload> PatchColumn(
+    public async Task<ColumnPayload> PatchColumn(
         PatchColumnInput input,
         [Service] AppDbContext db,
         [Service] IHttpContextAccessor httpContext,
@@ -169,11 +170,11 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(column.Board);
+        return new ColumnPayload(column);
     }
 
     [Authorize]
-    public async Task<BoardPayload> DeleteColumn(
+    public async Task<ColumnPayload> DeleteColumn(
         DeleteColumnInput input,
         [Service] AppDbContext db,
         [Service] IHttpContextAccessor httpContext,
@@ -201,7 +202,7 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(column.Board);
+        return new ColumnPayload(column);
     }
 
     #endregion

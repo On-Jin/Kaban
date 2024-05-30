@@ -1,0 +1,19 @@
+mutation {
+    deleteColumn(input: TEST_INPUT) {
+        column {
+            id
+            name
+            mainTasks {
+                description
+                id
+                status
+                title
+                subTasks {
+                    id
+                    isCompleted
+                    title
+                }
+            }
+        }
+    }
+}

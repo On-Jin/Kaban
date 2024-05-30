@@ -91,12 +91,17 @@ public partial class TestBoard
             var jsonWrapped = await response.Content.ReadAsStringAsync();
             _testOutputHelper.WriteLine(jsonWrapped);
             var jsonObject = JsonNode.Parse(jsonWrapped)!.AsObject();
-            id = int.Parse(jsonObject["data"]!["addBoard"]!["board"]["columns"][0]["id"]!.ToString());
+            id = int.Parse(jsonObject["data"]!["addColumn"]!["column"]["id"]!.ToString());
             _testOutputHelper.WriteLine($"{id}");
         }
 
         {
-            await DeleteColumn(_httpClientShadow, new DeleteColumnInput(id));
+            var response = await DeleteColumn(_httpClientShadow, new DeleteColumnInput(id));
+            string jsonWrapped = await response.Content.ReadAsStringAsync();
+            _testOutputHelper.WriteLine(jsonWrapped);
+            JsonSerializer
+                .Serialize(JsonSerializer.Deserialize<object>(jsonWrapped), TestHelper.JsonSerializerOptions)
+                .MatchSnapshot();
             (await GetQueryBoardsString()).MatchSnapshot(SnapshotNameExtension.Create("FullBoardQuery"));
         }
     }

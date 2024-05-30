@@ -1,5 +1,5 @@
 ﻿using Kaban.Models;
 
-namespace Kaban.GraphQL.Boards;
+namespace Kaban.GraphQL.Payloads;
 
 public record BoardPayload(Board Board);

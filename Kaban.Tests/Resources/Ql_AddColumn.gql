@@ -1,21 +1,17 @@
 mutation {
   addColumn(input: TEST_INPUT) {
-    board {
+    column {
       id
       name
-      columns {
+      mainTasks {
+        description
         id
-        name
-        mainTasks {
-          description
+        status
+        title
+        subTasks {
           id
-          status
+          isCompleted
           title
-          subTasks {
-            id
-            isCompleted
-            title
-          }
         }
       }
     }

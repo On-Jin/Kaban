@@ -1,6 +1,6 @@
 ﻿{
   "data": {
-    "addColumn": {
+    "deleteColumn": {
       "column": {
         "id": 10,
         "name": "Example",
