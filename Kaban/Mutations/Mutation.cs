@@ -134,7 +134,6 @@ public class Mutation
         {
             Name = input.Name,
             Order = board.Columns.Count,
-            MainTasks = input.MainTasks ?? []
         };
         board.Columns.Add(newColumn);
 
@@ -144,7 +143,7 @@ public class Mutation
     }
 
     [Authorize]
-    public async Task<ColumnPayload> PatchColumn(
+    public async Task<BoardPayload> PatchColumn(
         PatchColumnInput input,
         [Service] AppDbContext db,
         [Service] IHttpContextAccessor httpContext,
@@ -155,7 +154,7 @@ public class Mutation
 
         var column = db.Columns
             .Include(column => column.Board)
-            .ThenInclude(board => board.User)
+            .ThenInclude(board => board.User).Include(column => column.Board).ThenInclude(board => board.Columns)
             .SingleOrDefault(c => c.Id == input.Id);
 
         if (column == null)
@@ -173,9 +172,35 @@ public class Mutation
             column.Name = input.Name;
         }
 
+        if (input.Order.HasValue)
+        {
+            if (input.Order.Value < 0 || input.Order.Value >= column.Board.Columns.Count)
+            {
+                throw new GraphQLException(
+                    new Error($"Index {input.Order.Value} out of scope.", ErrorCode.WrongInput));
+            }
+
+            if (input.Order.Value != column.Order)
+            {
+                int startOrder = column.Order;
+                bool decrementBetween = input.Order.Value > startOrder;
+
+                foreach (var boardColumn in column.Board.Columns)
+                {
+                    if (boardColumn.Id == column.Id)
+                        continue;
+                    if (boardColumn.Order < startOrder || boardColumn.Order > input.Order.Value)
+                        continue;
+                    boardColumn.Order += decrementBetween ? -1 : 1;
+                }
+
+                column.Order = input.Order.Value;
+            }
+        }
+
         await db.SaveChangesAsync(cancellationToken);
 
-        return new ColumnPayload(Mapper.MapToColumnDto(column));
+        return new BoardPayload(Mapper.MapToBoardDto(column.Board));
     }
 
     [Authorize]

@@ -1,0 +1,52 @@
+﻿{
+  "data": {
+    "patchColumn": {
+      "board": {
+        "id": 1,
+        "name": "Board Name",
+        "columns": [
+          {
+            "id": 1,
+            "name": "Column 0",
+            "mainTasks": []
+          },
+          {
+            "id": 2,
+            "name": "Column 1",
+            "mainTasks": []
+          },
+          {
+            "id": 8,
+            "name": "Column 7",
+            "mainTasks": []
+          },
+          {
+            "id": 3,
+            "name": "Column 2",
+            "mainTasks": []
+          },
+          {
+            "id": 4,
+            "name": "Column 3",
+            "mainTasks": []
+          },
+          {
+            "id": 5,
+            "name": "Column 4",
+            "mainTasks": []
+          },
+          {
+            "id": 6,
+            "name": "Column 5",
+            "mainTasks": []
+          },
+          {
+            "id": 7,
+            "name": "Column 6",
+            "mainTasks": []
+          }
+        ]
+      }
+    }
+  }
+}

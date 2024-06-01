@@ -27,7 +27,7 @@ public static class Mapper
         {
             Id = mainTask.Id,
             Title = mainTask.Title,
-            SubTasks = mainTask.SubTasks.Select(MapToSubTaskDto).ToList()
+            SubTasks = mainTask.SubTasks.OrderBy(subTask => subTask.Order).Select(MapToSubTaskDto).ToList()
         };
     }
 
@@ -37,7 +37,7 @@ public static class Mapper
         {
             Id = column.Id,
             Name = column.Name,
-            MainTasks = column.MainTasks.Select(MapToMainTaskDto).ToList()
+            MainTasks = column.MainTasks.OrderBy(mainTask => mainTask.Order).Select(MapToMainTaskDto).ToList()
         };
     }
 
@@ -47,7 +47,7 @@ public static class Mapper
         {
             Id = board.Id,
             Name = board.Name,
-            Columns = board.Columns.Select(MapToColumnDto).ToList(),
+            Columns = board.Columns.OrderBy(column => column.Order).Select(MapToColumnDto).ToList(),
         };
     }
 }

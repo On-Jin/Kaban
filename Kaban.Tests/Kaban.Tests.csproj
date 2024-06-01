@@ -34,6 +34,9 @@
         <None Include="Resources/**">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="Resources\Ql_PatchColumn.gql">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -42,6 +45,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Kaban\Kaban.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Tests\TestColumn\__snapshots__\" />
     </ItemGroup>
 
 </Project>
