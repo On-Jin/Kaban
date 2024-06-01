@@ -78,7 +78,8 @@
               ],
               "order": 3
             }
-          ]
+          ],
+          "order": 0
         },
         {
           "name": "Doing",
@@ -211,7 +212,8 @@
               ],
               "order": 5
             }
-          ]
+          ],
+          "order": 1
         },
         {
           "name": "Done",
@@ -332,7 +334,8 @@
               ],
               "order": 6
             }
-          ]
+          ],
+          "order": 2
         }
       ]
     },
@@ -431,15 +434,18 @@
               ],
               "order": 2
             }
-          ]
+          ],
+          "order": 0
         },
         {
           "name": "Doing",
-          "tasks": []
+          "tasks": [],
+          "order": 1
         },
         {
           "name": "Done",
-          "tasks": []
+          "tasks": [],
+          "order": 2
         }
       ]
     },
@@ -490,15 +496,18 @@
               ],
               "order": 1
             }
-          ]
+          ],
+          "order": 0
         },
         {
           "name": "Next",
-          "tasks": []
+          "tasks": [],
+          "order": 1
         },
         {
           "name": "Later",
-          "tasks": []
+          "tasks": [],
+          "order": 2
         }
       ]
     }

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Kaban.GraphQL.Columns;
 using Kaban.Tests.Setup;
+using Snapshooter;
 using Snapshooter.Xunit;
 using Xunit.Abstractions;
 
@@ -46,6 +47,7 @@ public class TestColumnOrder(WebAppFactory factory, ITestOutputHelper testOutput
         var json = await PatchColumn(HttpClientShadow,
             new PatchColumnInput(1, null, 2));
         PrettyJson(json).MatchSnapshot();
+        (await GetQueryBoardsString()).MatchSnapshot(SnapshotNameExtension.Create("FullBoardQuery"));
     }
 
     [Fact]
@@ -55,6 +57,7 @@ public class TestColumnOrder(WebAppFactory factory, ITestOutputHelper testOutput
         var json = await PatchColumn(HttpClientShadow,
             new PatchColumnInput(2, null, 4));
         PrettyJson(json).MatchSnapshot();
+        (await GetQueryBoardsString()).MatchSnapshot(SnapshotNameExtension.Create("FullBoardQuery"));
     }
 
     [Fact]
@@ -64,6 +67,7 @@ public class TestColumnOrder(WebAppFactory factory, ITestOutputHelper testOutput
         var json = await PatchColumn(HttpClientShadow,
             new PatchColumnInput(8, null, 2));
         PrettyJson(json).MatchSnapshot();
+        (await GetQueryBoardsString()).MatchSnapshot(SnapshotNameExtension.Create("FullBoardQuery"));
     }
     
     [Fact]
@@ -73,6 +77,7 @@ public class TestColumnOrder(WebAppFactory factory, ITestOutputHelper testOutput
         var json = await PatchColumn(HttpClientShadow,
             new PatchColumnInput(8, null, 0));
         PrettyJson(json).MatchSnapshot();
+        (await GetQueryBoardsString()).MatchSnapshot(SnapshotNameExtension.Create("FullBoardQuery"));
     }
     
     [Fact]
@@ -82,5 +87,6 @@ public class TestColumnOrder(WebAppFactory factory, ITestOutputHelper testOutput
         var json = await PatchColumn(HttpClientShadow,
             new PatchColumnInput(1, null, 7));
         PrettyJson(json).MatchSnapshot();
+        (await GetQueryBoardsString()).MatchSnapshot(SnapshotNameExtension.Create("FullBoardQuery"));
     }
 }

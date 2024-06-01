@@ -154,7 +154,11 @@ public class Mutation
 
         var column = db.Columns
             .Include(column => column.Board)
-            .ThenInclude(board => board.User).Include(column => column.Board).ThenInclude(board => board.Columns)
+            .ThenInclude(board => board.User)
+            .Include(column => column.Board)
+            .ThenInclude(board => board.Columns)
+            .ThenInclude(column => column.MainTasks)
+            .ThenInclude(mainTask => mainTask.SubTasks)
             .SingleOrDefault(c => c.Id == input.Id);
 
         if (column == null)
@@ -182,22 +186,17 @@ public class Mutation
 
             if (input.Order.Value != column.Order)
             {
-                int startOrder = column.Order;
-                bool decrementBetween = input.Order.Value > startOrder;
+                column.Board.Columns.Sort((a, b) => a.Order - b.Order);
+                column.Board.Columns.Remove(column);
+                column.Board.Columns.Insert(input.Order.Value, column);
 
-                foreach (var boardColumn in column.Board.Columns)
+                for (var i = 0; i < column.Board.Columns.Count; i++)
                 {
-                    if (boardColumn.Id == column.Id)
-                        continue;
-                    if (boardColumn.Order < startOrder || boardColumn.Order > input.Order.Value)
-                        continue;
-                    boardColumn.Order += decrementBetween ? -1 : 1;
+                    column.Board.Columns[i].Order = i;
                 }
-
-                column.Order = input.Order.Value;
             }
         }
-
+        
         await db.SaveChangesAsync(cancellationToken);
 
         return new BoardPayload(Mapper.MapToBoardDto(column.Board));

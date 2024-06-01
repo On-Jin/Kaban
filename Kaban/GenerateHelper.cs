@@ -23,7 +23,8 @@ public static class GenerateHelper
             {
                 var column = new Column()
                 {
-                    Name = columnNode["name"].ToString()
+                    Name = columnNode["name"].ToString(),
+                    Order = columnNode["order"].GetValue<int>()
                 };
                 foreach (var taskNode in columnNode["tasks"].AsArray())
                 {
@@ -31,13 +32,15 @@ public static class GenerateHelper
                     {
                         Title = taskNode["title"].ToString(),
                         Description = taskNode["description"].ToString(),
+                        Order = taskNode["order"].GetValue<int>()
                     };
                     foreach (var subTaskNode in taskNode["subtasks"].AsArray())
                     {
                         var subTask = new SubTask()
                         {
                             Title = subTaskNode["title"].ToString(),
-                            IsCompleted = subTaskNode["isCompleted"].GetValue<bool>()
+                            IsCompleted = subTaskNode["isCompleted"].GetValue<bool>(),
+                            Order = subTaskNode["order"].GetValue<int>()
                         };
                         mainTask.SubTasks.Add(subTask);
                     }

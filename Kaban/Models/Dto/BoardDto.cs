@@ -27,6 +27,8 @@ public static class Mapper
         {
             Id = mainTask.Id,
             Title = mainTask.Title,
+            Status = mainTask.Column.Name,
+            Description = mainTask.Description,
             SubTasks = mainTask.SubTasks.OrderBy(subTask => subTask.Order).Select(MapToSubTaskDto).ToList()
         };
     }
@@ -49,5 +51,10 @@ public static class Mapper
             Name = board.Name,
             Columns = board.Columns.OrderBy(column => column.Order).Select(MapToColumnDto).ToList(),
         };
+    }
+
+    public static IEnumerable<BoardDto> MapToBoardsDto(IEnumerable<Board> boards)
+    {
+        return boards.Select(MapToBoardDto);
     }
 }
