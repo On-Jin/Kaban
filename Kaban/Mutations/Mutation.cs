@@ -339,6 +339,7 @@ public class Mutation
             .ThenInclude(mainTask => mainTask.SubTasks)
             .Include(mainTask => mainTask.Column)
             .ThenInclude(column => column.MainTasks)
+            .Include(mainTask => mainTask.SubTasks)
             .SingleOrDefault(mainTask => mainTask.Id == input.Id);
 
         if (mainTask == null)
@@ -362,9 +363,20 @@ public class Mutation
                     ErrorCode.NotFound));
             }
 
+            // Remove mainTask from the current collection
             fromColumn.MainTasks.Remove(mainTask);
-            mainTask.Order = displaceToColumn.MainTasks.Count;
+
+            // Update the column reference on the main task
+            mainTask.ColumnId = displaceToColumn.Id;
+
+            // Add mainTask to the new collection
             displaceToColumn.MainTasks.Add(mainTask);
+
+            // Update the main task in the context
+            db.Update(mainTask);
+
+            // Save changes
+            await db.SaveChangesAsync(cancellationToken);
             if (input.Order.HasValue)
             {
                 ProcessOrderInput(input.Order.Value, mainTask, displaceToColumn.MainTasks);

@@ -89,6 +89,29 @@
               },
               {
                 "description": "",
+                "id": 1,
+                "status": "Doing",
+                "title": "Build UI for onboarding flow",
+                "subTasks": [
+                  {
+                    "id": 1,
+                    "isCompleted": true,
+                    "title": "Sign up page"
+                  },
+                  {
+                    "id": 2,
+                    "isCompleted": false,
+                    "title": "Sign in page"
+                  },
+                  {
+                    "id": 3,
+                    "isCompleted": false,
+                    "title": "Welcome page"
+                  }
+                ]
+              },
+              {
+                "description": "",
                 "id": 6,
                 "status": "Doing",
                 "title": "Add account management endpoints",
@@ -191,13 +214,6 @@
                     "title": "Talk to potential customers about our proposed solution and ask for fair price expectancy"
                   }
                 ]
-              },
-              {
-                "description": "",
-                "id": 1,
-                "status": "Doing",
-                "title": "Build UI for onboarding flow",
-                "subTasks": []
               }
             ]
           },
