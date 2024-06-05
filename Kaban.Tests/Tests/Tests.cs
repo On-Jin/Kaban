@@ -120,19 +120,4 @@ public class Tests : IAsyncLifetime
             _testOutputHelper.WriteLine(db.Users.ToList().Count.ToString());
         }
     }
-
-    [Fact]
-    public async Task AddBoard()
-    {
-        await _resetDatabase();
-        using var scope = _factory.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-        await GenerateKabanBoardToShadowUser(db);
-
-        {
-            var user = (await db.Users.FindAsync(new Guid(TestHelper.GuidShadowAuth)))!;
-            JsonSerializer.Serialize(user, TestHelper.JsonSerializerOptions).MatchSnapshot();
-        }
-    }
 }

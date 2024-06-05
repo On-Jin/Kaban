@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using HotChocolate.Authorization;
 using Kaban.Data;
+using Kaban.GraphQL;
 using Kaban.Models;
 using Kaban.Models.Dto;
 using Kaban.Services;
@@ -75,5 +76,30 @@ public class Query
             .ToListAsync();
 
         return Mapper.MapToBoardsDto(boards).ToList();
+    }
+
+    [Authorize]
+    public async Task<BoardDto> GetBoard(
+        int id,
+        [Service] AppDbContext db,
+        [Service] IHttpContextAccessor httpContext,
+        [Service] IUserService userService
+    )
+    {
+        var user = (await userService.Find(httpContext.HttpContext.User.Identity.Name))!;
+
+        var board = await db.Entry(user)
+            .Collection(u => u.Boards)
+            .Query()
+            .Where(c => c.Id == id)
+            .Include(b => b.Columns)
+            .ThenInclude(c => c.MainTasks)
+            .ThenInclude(m => m.SubTasks)
+            .SingleOrDefaultAsync();
+
+        if (board == null)
+            throw new GraphQLException(new Error($"Board {id} not found.", ErrorCode.NotFound));
+
+        return Mapper.MapToBoardDto(board);
     }
 }

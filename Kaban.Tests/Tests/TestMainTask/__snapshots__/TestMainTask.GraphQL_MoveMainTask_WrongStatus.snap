@@ -1,0 +1,11 @@
+﻿{
+  "errors": [
+    {
+      "message": "Status/Column Wrong! doesnt exist",
+      "extensions": {
+        "code": "NOT_FOUND"
+      }
+    }
+  ],
+  "data": null
+}

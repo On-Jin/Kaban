@@ -15,6 +15,27 @@ namespace Kaban.Mutations;
 
 public class Mutation
 {
+    private void ProcessOrderInput<T>(int orderInput, T activeObject, List<T> listObjects) where T : class, IOrdered
+    {
+        if (orderInput < 0 || orderInput >= listObjects.Count)
+        {
+            throw new GraphQLException(
+                new Error($"Index {orderInput} out of scope.", ErrorCode.WrongInput));
+        }
+
+        if (orderInput != activeObject.Order)
+        {
+            listObjects.Sort((a, b) => a.Order - b.Order);
+            listObjects.Remove(activeObject);
+            listObjects.Insert(orderInput, activeObject);
+
+            for (var i = 0; i < listObjects.Count; i++)
+            {
+                listObjects[i].Order = i;
+            }
+        }
+    }
+
     #region Board
 
     [Authorize]
@@ -178,25 +199,9 @@ public class Mutation
 
         if (input.Order.HasValue)
         {
-            if (input.Order.Value < 0 || input.Order.Value >= column.Board.Columns.Count)
-            {
-                throw new GraphQLException(
-                    new Error($"Index {input.Order.Value} out of scope.", ErrorCode.WrongInput));
-            }
-
-            if (input.Order.Value != column.Order)
-            {
-                column.Board.Columns.Sort((a, b) => a.Order - b.Order);
-                column.Board.Columns.Remove(column);
-                column.Board.Columns.Insert(input.Order.Value, column);
-
-                for (var i = 0; i < column.Board.Columns.Count; i++)
-                {
-                    column.Board.Columns[i].Order = i;
-                }
-            }
+            ProcessOrderInput(input.Order.Value, column, column.Board.Columns);
         }
-        
+
         await db.SaveChangesAsync(cancellationToken);
 
         return new BoardPayload(Mapper.MapToBoardDto(column.Board));
@@ -239,7 +244,7 @@ public class Mutation
     #region MainTask
 
     [Authorize]
-    public async Task<BoardPayload> AddMainTask(
+    public async Task<MainTaskPayload> AddMainTask(
         AddMainTaskInput input,
         [Service] AppDbContext db,
         [Service] IHttpContextAccessor httpContext,
@@ -251,6 +256,7 @@ public class Mutation
         var column = db.Columns
             .Include(column => column.Board)
             .ThenInclude(board => board.User)
+            .Include(column => column.MainTasks)
             .SingleOrDefault(b => b.Id == input.ColumnId);
 
         if (column == null)
@@ -267,16 +273,17 @@ public class Mutation
         {
             Title = input.Title,
             Description = input.Description ?? "",
+            Order = column.MainTasks.Count
         };
         column.MainTasks.Add(newMainTask);
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(Mapper.MapToBoardDto(column.Board));
+        return new MainTaskPayload(Mapper.MapToMainTaskDto(newMainTask));
     }
 
     [Authorize]
-    public async Task<BoardPayload> PatchMainTask(
+    public async Task<MainTaskPayload> PatchMainTask(
         PatchMainTaskInput input,
         [Service] AppDbContext db,
         [Service] IHttpContextAccessor httpContext,
@@ -305,8 +312,68 @@ public class Mutation
             mainTask.Title = input.Title;
         if (input.Description != null)
             mainTask.Description = input.Description;
-        if (input.Status != null)
-            ; // TODO
+
+        await db.SaveChangesAsync(cancellationToken);
+
+        return new MainTaskPayload(Mapper.MapToMainTaskDto(mainTask));
+    }
+
+    [Authorize]
+    public async Task<BoardPayload> MoveMainTask(
+        MoveMainTaskInput input,
+        [Service] AppDbContext db,
+        [Service] IHttpContextAccessor httpContext,
+        [Service] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        var user = (await userService.Find(httpContext.HttpContext.User.Identity.Name))!;
+
+        var mainTask = db.MainTasks
+            .Include(mainTask => mainTask.Column)
+            .ThenInclude(column => column.Board)
+            .ThenInclude(board => board.User)
+            .Include(mainTask => mainTask.Column)
+            .ThenInclude(column => column.Board)
+            .ThenInclude(board => board.Columns)
+            .ThenInclude(column => column.MainTasks)
+            .ThenInclude(mainTask => mainTask.SubTasks)
+            .Include(mainTask => mainTask.Column)
+            .ThenInclude(column => column.MainTasks)
+            .SingleOrDefault(mainTask => mainTask.Id == input.Id);
+
+        if (mainTask == null)
+        {
+            throw new GraphQLException(new Error($"MainTask {input.Id} not found.", ErrorCode.NotFound));
+        }
+
+        if (mainTask.Column.Board.User.Id != user.Id)
+        {
+            throw new GraphQLException(new Error("Unauthorized.", ErrorCode.Unauthorized));
+        }
+
+        var fromColumn = mainTask.Column;
+        if (input.Status != null &&
+            !string.Equals(input.Status, mainTask.Column.Name, StringComparison.CurrentCultureIgnoreCase))
+        {
+            var displaceToColumn = mainTask.Column.Board.Columns.SingleOrDefault(c => c.Name == input.Status);
+            if (displaceToColumn == null)
+            {
+                throw new GraphQLException(new Error($"Status/Column {input.Status} doesnt exist",
+                    ErrorCode.NotFound));
+            }
+
+            fromColumn.MainTasks.Remove(mainTask);
+            mainTask.Order = displaceToColumn.MainTasks.Count;
+            displaceToColumn.MainTasks.Add(mainTask);
+            if (input.Order.HasValue)
+            {
+                ProcessOrderInput(input.Order.Value, mainTask, displaceToColumn.MainTasks);
+            }
+        }
+        else if (input.Order.HasValue)
+        {
+            ProcessOrderInput(input.Order.Value, mainTask, mainTask.Column.MainTasks);
+        }
 
         await db.SaveChangesAsync(cancellationToken);
 
@@ -314,7 +381,7 @@ public class Mutation
     }
 
     [Authorize]
-    public async Task<BoardPayload> DeleteMainTask(
+    public async Task<MainTaskPayload> DeleteMainTask(
         DeleteMainTaskInput input,
         [Service] AppDbContext db,
         [Service] IHttpContextAccessor httpContext,
@@ -343,7 +410,7 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(Mapper.MapToBoardDto(mainTask.Column.Board));
+        return new MainTaskPayload(Mapper.MapToMainTaskDto(mainTask));
     }
 
     #endregion

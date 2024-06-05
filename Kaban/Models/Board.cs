@@ -9,9 +9,9 @@ public class Board
 
     [Required]
     public string Name { get; set; } = "Board Name";
-    
+
     public List<Column> Columns { get; set; } = [];
-    
+
     [GraphQLIgnore]
     [JsonIgnore]
     public User User { get; set; }

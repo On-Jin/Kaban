@@ -1,0 +1,11 @@
+﻿{
+  "errors": [
+    {
+      "message": "Index -3 out of scope.",
+      "extensions": {
+        "code": "WRONG_INPUT"
+      }
+    }
+  ],
+  "data": null
+}

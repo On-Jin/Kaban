@@ -52,8 +52,9 @@ public class TestColumn(WebAppFactory factory, ITestOutputHelper testOutputHelpe
             await DeleteColumn(HttpClientShadow, new DeleteColumnInput(id));
 
             string jsonWrapped = await GetQueryBoardsString();
-            var boardsDto = JsonNode.Parse(jsonWrapped)!.AsObject()["data"]!["boards"]!.AsArray()
-                .Deserialize<List<BoardDto>>();
+            var json = JsonNode.Parse(jsonWrapped)!["data"]!["boards"]!.ToString();
+            var boardsDto = JsonSerializer.Deserialize<List<BoardDto>>(json,
+                new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
             boardsDto![0].Columns.Should().NotContain(c => c.Id == id);
         }
     }

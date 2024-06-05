@@ -10,16 +10,18 @@
       "Columns": [
         {
           "Id": 1,
+          "Order": 0,
           "Name": "Todo",
           "MainTasks": [
             {
               "Id": 1,
+              "Order": 0,
               "Title": "Build UI for onboarding flow",
               "Description": "",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 1,
+                  "Order": 0,
                   "Title": "Sign up page",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -27,6 +29,7 @@
                 },
                 {
                   "Id": 2,
+                  "Order": 1,
                   "Title": "Sign in page",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -34,6 +37,7 @@
                 },
                 {
                   "Id": 3,
+                  "Order": 2,
                   "Title": "Welcome page",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -45,12 +49,13 @@
             },
             {
               "Id": 2,
+              "Order": 1,
               "Title": "Build UI for search",
               "Description": "",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 4,
+                  "Order": 0,
                   "Title": "Search page",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -62,12 +67,13 @@
             },
             {
               "Id": 3,
+              "Order": 2,
               "Title": "Build settings UI",
               "Description": "",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 5,
+                  "Order": 0,
                   "Title": "Account page",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -75,6 +81,7 @@
                 },
                 {
                   "Id": 6,
+                  "Order": 1,
                   "Title": "Billing page",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -86,12 +93,13 @@
             },
             {
               "Id": 4,
+              "Order": 3,
               "Title": "QA and test all major user journeys",
               "Description": "Once we feel version one is ready, we need to rigorously test it both internally and externally to identify any major gaps.",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 7,
+                  "Order": 0,
                   "Title": "Internal testing",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -99,6 +107,7 @@
                 },
                 {
                   "Id": 8,
+                  "Order": 1,
                   "Title": "External testing",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -114,16 +123,18 @@
         },
         {
           "Id": 2,
+          "Order": 1,
           "Name": "Doing",
           "MainTasks": [
             {
               "Id": 5,
+              "Order": 0,
               "Title": "Design settings and search pages",
               "Description": "",
-              "Status": 1,
               "SubTasks": [
                 {
                   "Id": 9,
+                  "Order": 0,
                   "Title": "Settings - Account page",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -131,6 +142,7 @@
                 },
                 {
                   "Id": 10,
+                  "Order": 1,
                   "Title": "Settings - Billing page",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -138,6 +150,7 @@
                 },
                 {
                   "Id": 11,
+                  "Order": 2,
                   "Title": "Search page",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -149,12 +162,13 @@
             },
             {
               "Id": 6,
+              "Order": 1,
               "Title": "Add account management endpoints",
               "Description": "",
-              "Status": 1,
               "SubTasks": [
                 {
                   "Id": 12,
+                  "Order": 0,
                   "Title": "Upgrade plan",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -162,6 +176,7 @@
                 },
                 {
                   "Id": 13,
+                  "Order": 1,
                   "Title": "Cancel plan",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -169,6 +184,7 @@
                 },
                 {
                   "Id": 14,
+                  "Order": 2,
                   "Title": "Update payment method",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -180,12 +196,13 @@
             },
             {
               "Id": 7,
+              "Order": 2,
               "Title": "Design onboarding flow",
               "Description": "",
-              "Status": 1,
               "SubTasks": [
                 {
                   "Id": 15,
+                  "Order": 0,
                   "Title": "Sign up page",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -193,6 +210,7 @@
                 },
                 {
                   "Id": 16,
+                  "Order": 1,
                   "Title": "Sign in page",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -200,6 +218,7 @@
                 },
                 {
                   "Id": 17,
+                  "Order": 2,
                   "Title": "Welcome page",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -211,12 +230,13 @@
             },
             {
               "Id": 8,
+              "Order": 3,
               "Title": "Add search enpoints",
               "Description": "",
-              "Status": 1,
               "SubTasks": [
                 {
                   "Id": 18,
+                  "Order": 0,
                   "Title": "Add search endpoint",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -224,6 +244,7 @@
                 },
                 {
                   "Id": 19,
+                  "Order": 1,
                   "Title": "Define search filters",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -235,12 +256,13 @@
             },
             {
               "Id": 9,
+              "Order": 4,
               "Title": "Add authentication endpoints",
               "Description": "",
-              "Status": 1,
               "SubTasks": [
                 {
                   "Id": 20,
+                  "Order": 0,
                   "Title": "Define user model",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -248,6 +270,7 @@
                 },
                 {
                   "Id": 21,
+                  "Order": 1,
                   "Title": "Add auth endpoints",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -259,12 +282,13 @@
             },
             {
               "Id": 10,
+              "Order": 5,
               "Title": "Research pricing points of various competitors and trial different business models",
               "Description": "We know what we\u0027re planning to build for version one. Now we need to finalise the first pricing model we\u0027ll use. Keep iterating the subtasks until we have a coherent proposition.",
-              "Status": 1,
               "SubTasks": [
                 {
                   "Id": 22,
+                  "Order": 0,
                   "Title": "Research competitor pricing and business models",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -272,6 +296,7 @@
                 },
                 {
                   "Id": 23,
+                  "Order": 1,
                   "Title": "Outline a business model that works for our solution",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -279,6 +304,7 @@
                 },
                 {
                   "Id": 24,
+                  "Order": 2,
                   "Title": "Talk to potential customers about our proposed solution and ask for fair price expectancy",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -294,16 +320,18 @@
         },
         {
           "Id": 3,
+          "Order": 2,
           "Name": "Done",
           "MainTasks": [
             {
               "Id": 11,
+              "Order": 0,
               "Title": "Conduct 5 wireframe tests",
               "Description": "Ensure the layout continues to make sense and we have strong buy-in from potential users.",
-              "Status": 2,
               "SubTasks": [
                 {
                   "Id": 25,
+                  "Order": 0,
                   "Title": "Complete 5 wireframe prototype tests",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -315,12 +343,13 @@
             },
             {
               "Id": 12,
+              "Order": 1,
               "Title": "Create wireframe prototype",
               "Description": "Create a greyscale clickable wireframe prototype to test our asssumptions so far.",
-              "Status": 2,
               "SubTasks": [
                 {
                   "Id": 26,
+                  "Order": 0,
                   "Title": "Create clickable wireframe prototype in Balsamiq",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -332,12 +361,13 @@
             },
             {
               "Id": 13,
+              "Order": 2,
               "Title": "Review results of usability tests and iterate",
               "Description": "Keep iterating through the subtasks until we\u0027re clear on the core concepts for the app.",
-              "Status": 2,
               "SubTasks": [
                 {
                   "Id": 27,
+                  "Order": 0,
                   "Title": "Meet to review notes from previous tests and plan changes",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -345,6 +375,7 @@
                 },
                 {
                   "Id": 28,
+                  "Order": 1,
                   "Title": "Make changes to paper prototypes",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -352,6 +383,7 @@
                 },
                 {
                   "Id": 29,
+                  "Order": 2,
                   "Title": "Conduct 5 usability tests",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -363,12 +395,13 @@
             },
             {
               "Id": 14,
+              "Order": 3,
               "Title": "Create paper prototypes and conduct 10 usability tests with potential customers",
               "Description": "",
-              "Status": 2,
               "SubTasks": [
                 {
                   "Id": 30,
+                  "Order": 0,
                   "Title": "Create paper prototypes for version one",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -376,6 +409,7 @@
                 },
                 {
                   "Id": 31,
+                  "Order": 1,
                   "Title": "Complete 10 usability tests",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -387,12 +421,13 @@
             },
             {
               "Id": 15,
+              "Order": 4,
               "Title": "Market discovery",
               "Description": "We need to define and refine our core product. Interviews will help us learn common pain points and help us define the strongest MVP.",
-              "Status": 2,
               "SubTasks": [
                 {
                   "Id": 32,
+                  "Order": 0,
                   "Title": "Interview 10 prospective customers",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -404,12 +439,13 @@
             },
             {
               "Id": 16,
+              "Order": 5,
               "Title": "Competitor analysis",
               "Description": "",
-              "Status": 2,
               "SubTasks": [
                 {
                   "Id": 33,
+                  "Order": 0,
                   "Title": "Find direct and indirect competitors",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -417,6 +453,7 @@
                 },
                 {
                   "Id": 34,
+                  "Order": 1,
                   "Title": "SWOT analysis for each competitor",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -428,12 +465,13 @@
             },
             {
               "Id": 17,
+              "Order": 6,
               "Title": "Research the market",
               "Description": "We need to get a solid overview of the market to ensure we have up-to-date estimates of market size and demand.",
-              "Status": 2,
               "SubTasks": [
                 {
                   "Id": 35,
+                  "Order": 0,
                   "Title": "Write up research analysis",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -441,6 +479,7 @@
                 },
                 {
                   "Id": 36,
+                  "Order": 1,
                   "Title": "Calculate TAM",
                   "IsCompleted": true,
                   "MainTask": null,
@@ -462,16 +501,18 @@
       "Columns": [
         {
           "Id": 4,
+          "Order": 0,
           "Name": "Todo",
           "MainTasks": [
             {
               "Id": 18,
+              "Order": 0,
               "Title": "Plan Product Hunt launch",
               "Description": "",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 37,
+                  "Order": 0,
                   "Title": "Find hunter",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -479,6 +520,7 @@
                 },
                 {
                   "Id": 38,
+                  "Order": 1,
                   "Title": "Gather assets",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -486,6 +528,7 @@
                 },
                 {
                   "Id": 39,
+                  "Order": 2,
                   "Title": "Draft product page",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -493,6 +536,7 @@
                 },
                 {
                   "Id": 40,
+                  "Order": 3,
                   "Title": "Notify customers",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -500,6 +544,7 @@
                 },
                 {
                   "Id": 41,
+                  "Order": 4,
                   "Title": "Notify network",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -507,6 +552,7 @@
                 },
                 {
                   "Id": 42,
+                  "Order": 5,
                   "Title": "Launch!",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -518,12 +564,13 @@
             },
             {
               "Id": 19,
+              "Order": 1,
               "Title": "Share on Show HN",
               "Description": "",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 43,
+                  "Order": 0,
                   "Title": "Draft out HN post",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -531,6 +578,7 @@
                 },
                 {
                   "Id": 44,
+                  "Order": 1,
                   "Title": "Get feedback and refine",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -538,6 +586,7 @@
                 },
                 {
                   "Id": 45,
+                  "Order": 2,
                   "Title": "Publish post",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -549,12 +598,13 @@
             },
             {
               "Id": 20,
+              "Order": 2,
               "Title": "Write launch article to publish on multiple channels",
               "Description": "",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 46,
+                  "Order": 0,
                   "Title": "Write article",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -562,6 +612,7 @@
                 },
                 {
                   "Id": 47,
+                  "Order": 1,
                   "Title": "Publish on LinkedIn",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -569,6 +620,7 @@
                 },
                 {
                   "Id": 48,
+                  "Order": 2,
                   "Title": "Publish on Inndie Hackers",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -576,6 +628,7 @@
                 },
                 {
                   "Id": 49,
+                  "Order": 3,
                   "Title": "Publish on Medium",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -591,6 +644,7 @@
         },
         {
           "Id": 5,
+          "Order": 1,
           "Name": "Doing",
           "MainTasks": [],
           "Board": null,
@@ -598,6 +652,7 @@
         },
         {
           "Id": 6,
+          "Order": 2,
           "Name": "Done",
           "MainTasks": [],
           "Board": null,
@@ -611,16 +666,18 @@
       "Columns": [
         {
           "Id": 7,
+          "Order": 0,
           "Name": "Now",
           "MainTasks": [
             {
               "Id": 21,
+              "Order": 0,
               "Title": "Launch version one",
               "Description": "",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 50,
+                  "Order": 0,
                   "Title": "Launch privately to our waitlist",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -628,6 +685,7 @@
                 },
                 {
                   "Id": 51,
+                  "Order": 1,
                   "Title": "Launch publicly on PH, HN, etc.",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -639,12 +697,13 @@
             },
             {
               "Id": 22,
+              "Order": 1,
               "Title": "Review early feedback and plan next steps for roadmap",
               "Description": "Beyond the initial launch, we\u0027re keeping the initial roadmap completely empty. This meeting will help us plan out our next steps based on actual customer feedback.",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 52,
+                  "Order": 0,
                   "Title": "Interview 10 customers",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -652,6 +711,7 @@
                 },
                 {
                   "Id": 53,
+                  "Order": 1,
                   "Title": "Review common customer pain points and suggestions",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -659,6 +719,7 @@
                 },
                 {
                   "Id": 54,
+                  "Order": 2,
                   "Title": "Outline next steps for our roadmap",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -674,6 +735,7 @@
         },
         {
           "Id": 8,
+          "Order": 1,
           "Name": "Next",
           "MainTasks": [],
           "Board": null,
@@ -681,6 +743,7 @@
         },
         {
           "Id": 9,
+          "Order": 2,
           "Name": "Later",
           "MainTasks": [],
           "Board": null,

@@ -1,0 +1,15 @@
+mutation {
+    addMainTask(input: TEST_INPUT) {
+        mainTask {
+            description
+            id
+            status
+            title
+            subTasks {
+                id
+                isCompleted
+                title
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+﻿{
+  "data": {
+    "patchMainTask": {
+      "mainTask": {
+        "description": "Updated description!",
+        "id": 1,
+        "status": "Todo",
+        "title": "New MainTask Name Example!",
+        "subTasks": []
+      }
+    }
+  }
+}

@@ -52,7 +52,7 @@ public class TestColumnBase(WebAppFactory factory, ITestOutputHelper testOutputH
         return await response.Content.ReadAsStringAsync();
     }
 
-    protected async Task ResetAndPopulateForOrder()
+    protected async Task ResetAndPopulateForColumnOrder()
     {
         await ResetDatabase();
         using var scope = Factory.Services.CreateScope();

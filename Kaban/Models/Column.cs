@@ -2,7 +2,7 @@
 
 namespace Kaban.Models;
 
-public class Column
+public class Column : IOrdered
 {
     public int Id { get; set; }
 

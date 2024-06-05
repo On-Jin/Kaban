@@ -10,16 +10,18 @@
       "Columns": [
         {
           "Id": 4,
+          "Order": 0,
           "Name": "Todo",
           "MainTasks": [
             {
               "Id": 18,
+              "Order": 0,
               "Title": "Plan Product Hunt launch",
               "Description": "",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 37,
+                  "Order": 0,
                   "Title": "Find hunter",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -27,6 +29,7 @@
                 },
                 {
                   "Id": 38,
+                  "Order": 1,
                   "Title": "Gather assets",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -34,6 +37,7 @@
                 },
                 {
                   "Id": 39,
+                  "Order": 2,
                   "Title": "Draft product page",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -41,6 +45,7 @@
                 },
                 {
                   "Id": 40,
+                  "Order": 3,
                   "Title": "Notify customers",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -48,6 +53,7 @@
                 },
                 {
                   "Id": 41,
+                  "Order": 4,
                   "Title": "Notify network",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -55,6 +61,7 @@
                 },
                 {
                   "Id": 42,
+                  "Order": 5,
                   "Title": "Launch!",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -66,12 +73,13 @@
             },
             {
               "Id": 19,
+              "Order": 1,
               "Title": "Share on Show HN",
               "Description": "",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 43,
+                  "Order": 0,
                   "Title": "Draft out HN post",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -79,6 +87,7 @@
                 },
                 {
                   "Id": 44,
+                  "Order": 1,
                   "Title": "Get feedback and refine",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -86,6 +95,7 @@
                 },
                 {
                   "Id": 45,
+                  "Order": 2,
                   "Title": "Publish post",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -97,12 +107,13 @@
             },
             {
               "Id": 20,
+              "Order": 2,
               "Title": "Write launch article to publish on multiple channels",
               "Description": "",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 46,
+                  "Order": 0,
                   "Title": "Write article",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -110,6 +121,7 @@
                 },
                 {
                   "Id": 47,
+                  "Order": 1,
                   "Title": "Publish on LinkedIn",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -117,6 +129,7 @@
                 },
                 {
                   "Id": 48,
+                  "Order": 2,
                   "Title": "Publish on Inndie Hackers",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -124,6 +137,7 @@
                 },
                 {
                   "Id": 49,
+                  "Order": 3,
                   "Title": "Publish on Medium",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -139,6 +153,7 @@
         },
         {
           "Id": 5,
+          "Order": 1,
           "Name": "Doing",
           "MainTasks": [],
           "Board": null,
@@ -146,6 +161,7 @@
         },
         {
           "Id": 6,
+          "Order": 2,
           "Name": "Done",
           "MainTasks": [],
           "Board": null,
@@ -159,16 +175,18 @@
       "Columns": [
         {
           "Id": 7,
+          "Order": 0,
           "Name": "Now",
           "MainTasks": [
             {
               "Id": 21,
+              "Order": 0,
               "Title": "Launch version one",
               "Description": "",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 50,
+                  "Order": 0,
                   "Title": "Launch privately to our waitlist",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -176,6 +194,7 @@
                 },
                 {
                   "Id": 51,
+                  "Order": 1,
                   "Title": "Launch publicly on PH, HN, etc.",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -187,12 +206,13 @@
             },
             {
               "Id": 22,
+              "Order": 1,
               "Title": "Review early feedback and plan next steps for roadmap",
               "Description": "Beyond the initial launch, we\u0027re keeping the initial roadmap completely empty. This meeting will help us plan out our next steps based on actual customer feedback.",
-              "Status": 0,
               "SubTasks": [
                 {
                   "Id": 52,
+                  "Order": 0,
                   "Title": "Interview 10 customers",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -200,6 +220,7 @@
                 },
                 {
                   "Id": 53,
+                  "Order": 1,
                   "Title": "Review common customer pain points and suggestions",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -207,6 +228,7 @@
                 },
                 {
                   "Id": 54,
+                  "Order": 2,
                   "Title": "Outline next steps for our roadmap",
                   "IsCompleted": false,
                   "MainTask": null,
@@ -222,6 +244,7 @@
         },
         {
           "Id": 8,
+          "Order": 1,
           "Name": "Next",
           "MainTasks": [],
           "Board": null,
@@ -229,6 +252,7 @@
         },
         {
           "Id": 9,
+          "Order": 2,
           "Name": "Later",
           "MainTasks": [],
           "Board": null,

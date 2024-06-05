@@ -2,7 +2,7 @@
 
 namespace Kaban.Models;
 
-public class SubTask
+public class SubTask : IOrdered
 {
     public int Id { get; set; }
 

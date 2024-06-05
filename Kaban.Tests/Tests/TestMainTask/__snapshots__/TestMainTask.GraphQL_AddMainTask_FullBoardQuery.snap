@@ -80,6 +80,13 @@
                     "title": "External testing"
                   }
                 ]
+              },
+              {
+                "description": "Description",
+                "id": 23,
+                "status": "Todo",
+                "title": "Main Task Example",
+                "subTasks": []
               }
             ]
           },
@@ -514,11 +521,6 @@
             "mainTasks": []
           }
         ]
-      },
-      {
-        "id": 4,
-        "name": "Example",
-        "columns": []
       }
     ]
   }

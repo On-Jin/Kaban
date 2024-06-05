@@ -10,7 +10,7 @@
     &lt;ProjectFile&gt;D739CE41-45A4-479A-AD7A-D21FCC860EC1/d:Tests/f:Schema.cs&lt;/ProjectFile&gt;&#xD;
   &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fbc9b84f_002D19e1_002D4ca6_002D95de_002D126612f0ad2e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Me_Discord" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=632ffdc8_002Df6c3_002D4052_002Da9e8_002Da18c0e02b45d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="MeTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.MeTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.Tests.Test1&lt;/TestId&gt;&#xD;
@@ -32,5 +32,17 @@
     &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestBoard.TestBoard&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestColumn.TestColumn&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestColumn.TestColumnOrder.TestColumnOrder&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestMainTask.TestMainTask.GraphQL_AddMainTask&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestMainTask.TestMainTask.GraphQL_DeleteMainTask&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestMainTask.TestMainTask.GraphQL_PatchMainTask&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestMainTask.TestMainTask.GraphQL_PatchMainTask_DisplaceToOtherColumn&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestMainTask.TestMainTask.GraphQL_PatchMainTask_WrongStatus&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestMainTask.TestMainTask&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6ad3f037_002Db632_002D4187_002D9386_002D1d0744c1f715/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GraphQL_DeleteMainTask" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::D739CE41-45A4-479A-AD7A-D21FCC860EC1::net8.0::Kaban.Tests.Tests.TestMainTask.TestMainTask.GraphQL_DeleteMainTask&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	</wpf:ResourceDictionary>

@@ -1,0 +1,13 @@
+﻿{
+  "data": {
+    "addMainTask": {
+      "mainTask": {
+        "description": "Description",
+        "id": 23,
+        "status": "Todo",
+        "title": "Main Task Example",
+        "subTasks": []
+      }
+    }
+  }
+}

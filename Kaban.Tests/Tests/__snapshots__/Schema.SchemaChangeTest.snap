@@ -1,5 +1,6 @@
 ﻿schema {
   query: Query
+  mutation: Mutation
 }
 
 type Author {
@@ -7,11 +8,185 @@ type Author {
   books: [Book!]!
 }
 
+"G Description"
+type Board {
+  "A name !"
+  name: String!
+  id: Int!
+  columns: [Column!]!
+}
+
+type BoardDto {
+  id: Int!
+  name: String!
+  columns: [ColumnDto!]!
+}
+
+type BoardPayload {
+  board: BoardDto!
+}
+
+type BoardsPayload {
+  board: [Board!]!
+}
+
 type Book {
   title: String!
+}
+
+type Column {
+  id: Int!
+  order: Int!
+  name: String!
+  mainTasks: [MainTask!]!
+}
+
+type ColumnDto {
+  id: Int!
+  name: String!
+  mainTasks: [MainTaskDto!]!
+}
+
+type ColumnPayload {
+  column: ColumnDto!
+}
+
+type MainTask {
+  id: Int!
+  order: Int!
+  title: String!
+  description: String!
+  subTasks: [SubTask!]!
+}
+
+type MainTaskDto {
+  id: Int!
+  title: String!
+  description: String!
+  status: String!
+  subTasks: [SubTaskDto!]!
+}
+
+type MainTaskPayload {
+  mainTask: MainTaskDto!
+}
+
+type Me {
+  id: UUID!
+  discordUsername: String
+  discordAvatarUrl: String
+}
+
+type Mutation {
+  populateMe(input: AddBoardInput!): BoardsPayload!
+  addBoard(input: AddBoardInput!): BoardPayload!
+  patchBoard(input: PatchBoardInput!): BoardPayload!
+  deleteBoard(input: DeleteBoardInput!): BoardPayload!
+  addColumn(input: AddColumnInput!): ColumnPayload!
+  patchColumn(input: PatchColumnInput!): BoardPayload!
+  deleteColumn(input: DeleteColumnInput!): ColumnPayload!
+  addMainTask(input: AddMainTaskInput!): MainTaskPayload!
+  patchMainTask(input: PatchMainTaskInput!): MainTaskPayload!
+  moveMainTask(input: MoveMainTaskInput!): BoardPayload!
+  deleteMainTask(input: DeleteMainTaskInput!): MainTaskPayload!
+  addSubTask(input: AddSubTaskInput!): BoardPayload!
+  patchSubTask(input: PatchSubTaskInput!): BoardPayload!
+  deleteSubTask(input: DeleteSubTaskInput!): BoardPayload!
 }
 
 type Query {
   authors: [Author!]!
   book: Book!
+  bookAuth: Book! @authorize(policy: "discord-enabled")
+  me: Me! @authorize
+  boards: [BoardDto!]! @authorize
+  board(id: Int!): BoardDto! @authorize
 }
+
+type SubTask {
+  id: Int!
+  order: Int!
+  title: String!
+  isCompleted: Boolean!
+}
+
+type SubTaskDto {
+  id: Int!
+  title: String!
+  isCompleted: Boolean!
+}
+
+input AddBoardInput {
+  name: String!
+}
+
+input AddColumnInput {
+  boardId: Int!
+  name: String!
+}
+
+input AddMainTaskInput {
+  columnId: Int!
+  title: String!
+  description: String
+}
+
+input AddSubTaskInput {
+  mainTaskId: Int!
+  title: String!
+}
+
+input DeleteBoardInput {
+  id: Int!
+}
+
+input DeleteColumnInput {
+  id: Int!
+}
+
+input DeleteMainTaskInput {
+  id: Int!
+}
+
+input DeleteSubTaskInput {
+  id: Int!
+}
+
+input MoveMainTaskInput {
+  id: Int!
+  status: String
+  order: Int
+}
+
+input PatchBoardInput {
+  id: Int!
+  name: String
+}
+
+input PatchColumnInput {
+  id: Int!
+  name: String
+  order: Int
+}
+
+input PatchMainTaskInput {
+  id: Int!
+  title: String
+  description: String
+}
+
+input PatchSubTaskInput {
+  id: Int!
+  title: String
+  isCompleted: Boolean
+}
+
+enum ApplyPolicy {
+  BEFORE_RESOLVER
+  AFTER_RESOLVER
+  VALIDATION
+}
+
+directive @authorize("The name of the authorization policy that determines access to the annotated resource." policy: String "Roles that are allowed to access the annotated resource." roles: [String!] "Defines when when the authorize directive shall be applied.By default the authorize directives are applied during the validation phase." apply: ApplyPolicy! = BEFORE_RESOLVER) repeatable on OBJECT | FIELD_DEFINITION
+
+scalar UUID @specifiedBy(url: "https:\/\/tools.ietf.org\/html\/rfc4122")

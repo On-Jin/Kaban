@@ -15,7 +15,7 @@ public static class Mapper
     {
         return new SubTaskDto
         {
-            Id = subTask.MainTaskId,
+            Id = subTask.Id,
             Title = subTask.Title,
             IsCompleted = subTask.IsCompleted
         };

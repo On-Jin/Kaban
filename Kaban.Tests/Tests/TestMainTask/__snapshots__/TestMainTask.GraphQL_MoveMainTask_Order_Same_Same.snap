@@ -1,0 +1,80 @@
+﻿{
+  "data": {
+    "moveMainTask": {
+      "board": {
+        "id": 1,
+        "name": "Board Name",
+        "columns": [
+          {
+            "id": 1,
+            "name": "Column 0",
+            "mainTasks": [
+              {
+                "description": "",
+                "id": 1,
+                "status": "Column 0",
+                "title": "MT_0__C0",
+                "subTasks": []
+              },
+              {
+                "description": "",
+                "id": 2,
+                "status": "Column 0",
+                "title": "MT_1__C0",
+                "subTasks": []
+              },
+              {
+                "description": "",
+                "id": 3,
+                "status": "Column 0",
+                "title": "MT_2__C0",
+                "subTasks": []
+              },
+              {
+                "description": "",
+                "id": 4,
+                "status": "Column 0",
+                "title": "MT_3__C0",
+                "subTasks": []
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "name": "Column 1",
+            "mainTasks": [
+              {
+                "description": "",
+                "id": 5,
+                "status": "Column 1",
+                "title": "MT_0__C1",
+                "subTasks": []
+              },
+              {
+                "description": "",
+                "id": 6,
+                "status": "Column 1",
+                "title": "MT_1__C1",
+                "subTasks": []
+              },
+              {
+                "description": "",
+                "id": 7,
+                "status": "Column 1",
+                "title": "MT_2__C1",
+                "subTasks": []
+              },
+              {
+                "description": "",
+                "id": 8,
+                "status": "Column 1",
+                "title": "MT_3__C1",
+                "subTasks": []
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

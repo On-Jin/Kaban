@@ -37,6 +37,18 @@
         <None Update="Resources\Ql_PatchColumn.gql">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="Resources\Ql_AddMainTask.gql">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\Ql_PatchMainTask.gql">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\Ql_DeleteMainTask.gql">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\Ql_MoveMainTask.gql">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -49,6 +61,7 @@
 
     <ItemGroup>
       <Folder Include="Tests\TestColumn\__snapshots__\" />
+      <Folder Include="Tests\TestMainTask\__snapshots__\" />
     </ItemGroup>
 
 </Project>
