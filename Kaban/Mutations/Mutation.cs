@@ -499,7 +499,7 @@ public class Mutation
             throw new GraphQLException(new Error("Unauthorized.", ErrorCode.Unauthorized));
         }
 
-        foreach (var title in input.Title)
+        foreach (var title in input.Titles)
         {
             mainTask.SubTasks.Add(new SubTask()
             {
