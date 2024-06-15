@@ -49,6 +49,18 @@
         <None Update="Resources\Ql_MoveMainTask.gql">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="Resources\Ql_AddSubTask.gql">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\Ql_AddSubTasks.gql">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\Ql_DeleteSubTask.gql">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\Ql_DeleteSubTasks.gql">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -62,6 +74,7 @@
     <ItemGroup>
       <Folder Include="Tests\TestColumn\__snapshots__\" />
       <Folder Include="Tests\TestMainTask\__snapshots__\" />
+      <Folder Include="Tests\TestSubTask\__snapshots__\" />
     </ItemGroup>
 
 </Project>

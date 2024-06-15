@@ -1,0 +1,19 @@
+﻿{
+  "data": {
+    "deleteSubTasks": {
+      "mainTask": {
+        "description": "",
+        "id": 1,
+        "status": "Todo",
+        "title": "Build UI for onboarding flow",
+        "subTasks": [
+          {
+            "id": 3,
+            "isCompleted": false,
+            "title": "Welcome page"
+          }
+        ]
+      }
+    }
+  }
+}

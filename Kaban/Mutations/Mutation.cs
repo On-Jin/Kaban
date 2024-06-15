@@ -326,6 +326,8 @@ public class Mutation
         [Service] IUserService userService,
         CancellationToken cancellationToken)
     {
+        Console.WriteLine($"{input.Id} : {input.Status}, {input.Order}");
+
         var user = (await userService.Find(httpContext.HttpContext.User.Identity.Name))!;
 
         var mainTask = db.MainTasks
@@ -342,6 +344,7 @@ public class Mutation
             .Include(mainTask => mainTask.SubTasks)
             .SingleOrDefault(mainTask => mainTask.Id == input.Id);
 
+
         if (mainTask == null)
         {
             throw new GraphQLException(new Error($"MainTask {input.Id} not found.", ErrorCode.NotFound));
@@ -351,6 +354,7 @@ public class Mutation
         {
             throw new GraphQLException(new Error("Unauthorized.", ErrorCode.Unauthorized));
         }
+
 
         var fromColumn = mainTask.Column;
         if (input.Status != null &&
@@ -370,6 +374,7 @@ public class Mutation
             mainTask.ColumnId = displaceToColumn.Id;
 
             // Add mainTask to the new collection
+            mainTask.Order = displaceToColumn.MainTasks.Count;
             displaceToColumn.MainTasks.Add(mainTask);
 
             // Update the main task in the context
@@ -430,7 +435,7 @@ public class Mutation
     #region SubTask
 
     [Authorize]
-    public async Task<BoardPayload> AddSubTask(
+    public async Task<MainTaskPayload> AddSubTask(
         AddSubTaskInput input,
         [Service] AppDbContext db,
         [Service] IHttpContextAccessor httpContext,
@@ -442,7 +447,7 @@ public class Mutation
         var mainTask = db.MainTasks
             .Include(mainTask => mainTask.Column)
             .ThenInclude(column => column.Board)
-            .ThenInclude(board => board.User)
+            .ThenInclude(board => board.User).Include(mainTask => mainTask.SubTasks)
             .SingleOrDefault(mainTask => mainTask.Id == input.MainTaskId);
 
         if (mainTask == null)
@@ -459,16 +464,58 @@ public class Mutation
         {
             Title = input.Title,
             IsCompleted = false,
+            Order = mainTask.SubTasks.Count
         };
         mainTask.SubTasks.Add(newSubTask);
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(Mapper.MapToBoardDto(mainTask.Column.Board));
+        return new MainTaskPayload(Mapper.MapToMainTaskDto(mainTask));
     }
 
     [Authorize]
-    public async Task<BoardPayload> PatchSubTask(
+    public async Task<MainTaskPayload> AddSubTasks(
+        AddSubTasksInput input,
+        [Service] AppDbContext db,
+        [Service] IHttpContextAccessor httpContext,
+        [Service] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        var user = (await userService.Find(httpContext.HttpContext.User.Identity.Name))!;
+
+        var mainTask = db.MainTasks
+            .Include(mainTask => mainTask.Column)
+            .ThenInclude(column => column.Board)
+            .ThenInclude(board => board.User).Include(mainTask => mainTask.SubTasks)
+            .SingleOrDefault(mainTask => mainTask.Id == input.MainTaskId);
+
+        if (mainTask == null)
+        {
+            throw new GraphQLException(new Error($"MainTask {input.MainTaskId} not found.", ErrorCode.NotFound));
+        }
+
+        if (mainTask.Column.Board.User.Id != user.Id)
+        {
+            throw new GraphQLException(new Error("Unauthorized.", ErrorCode.Unauthorized));
+        }
+
+        foreach (var title in input.Title)
+        {
+            mainTask.SubTasks.Add(new SubTask()
+            {
+                Title = title,
+                IsCompleted = false,
+                Order = mainTask.SubTasks.Count
+            });
+        }
+
+        await db.SaveChangesAsync(cancellationToken);
+
+        return new MainTaskPayload(Mapper.MapToMainTaskDto(mainTask));
+    }
+
+    [Authorize]
+    public async Task<SubTaskPayload> PatchSubTask(
         PatchSubTaskInput input,
         [Service] AppDbContext db,
         [Service] IHttpContextAccessor httpContext,
@@ -501,11 +548,11 @@ public class Mutation
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(Mapper.MapToBoardDto(subTask.MainTask.Column.Board));
+        return new SubTaskPayload(Mapper.MapToSubTaskDto(subTask));
     }
 
     [Authorize]
-    public async Task<BoardPayload> DeleteSubTask(
+    public async Task<MainTaskPayload> DeleteSubTask(
         DeleteSubTaskInput input,
         [Service] AppDbContext db,
         [Service] IHttpContextAccessor httpContext,
@@ -518,7 +565,8 @@ public class Mutation
             .Include(subTask => subTask.MainTask)
             .ThenInclude(mainTask => mainTask.Column)
             .ThenInclude(column => column.Board)
-            .ThenInclude(board => board.User)
+            .ThenInclude(board => board.User).Include(subTask => subTask.MainTask)
+            .ThenInclude(mainTask => mainTask.SubTasks)
             .SingleOrDefault(mainTask => mainTask.Id == input.Id);
 
         if (subTask == null)
@@ -533,10 +581,71 @@ public class Mutation
 
         db.SubTasks.Remove(subTask);
 
+        for (var i = 0; i < subTask.MainTask.SubTasks.Count; i++)
+        {
+            subTask.MainTask.SubTasks[i].Order = i;
+        }
+
         await db.SaveChangesAsync(cancellationToken);
 
-        return new BoardPayload(Mapper.MapToBoardDto(subTask.MainTask.Column.Board));
+        return new MainTaskPayload(Mapper.MapToMainTaskDto(subTask.MainTask));
     }
 
+    [Authorize]
+    public async Task<MainTaskPayload> DeleteSubTasks(
+        DeleteSubTasksInput input,
+        [Service] AppDbContext db,
+        [Service] IHttpContextAccessor httpContext,
+        [Service] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        var user = (await userService.Find(httpContext.HttpContext.User.Identity.Name))!;
+
+        var subTasks = db.SubTasks
+            .Include(subTask => subTask.MainTask)
+            .ThenInclude(mainTask => mainTask.Column)
+            .ThenInclude(column => column.Board)
+            .ThenInclude(board => board.User)
+            .Where(subTask => input.Ids.Contains(subTask.Id))
+            .ToList();
+
+        if (subTasks.Count == 0)
+        {
+            throw new GraphQLException(new Error($"No valid SubTask found not found.", ErrorCode.NotFound));
+        }
+
+        var refSubTask = subTasks.First();
+
+        if (subTasks.Any(s => s.MainTaskId != refSubTask.MainTaskId))
+        {
+            throw new GraphQLException(new Error($"All SubTask should be have same MainTask.", ErrorCode.NotFound));
+        }
+
+        foreach (var subTask in subTasks)
+        {
+            if (subTask.MainTask.Column.Board.User.Id != user.Id)
+            {
+                throw new GraphQLException(new Error($"SubTask {subTask.Id} Unauthorized.", ErrorCode.Unauthorized));
+            }
+
+            db.SubTasks.Remove(subTask);
+        }
+
+        var mainTaskWithSubTasks = db.MainTasks
+            .Include(mt => mt.SubTasks)
+            .First(mt => mt.Id == refSubTask.MainTaskId);
+        
+        for (var i = 0; i < mainTaskWithSubTasks.SubTasks.Count; i++)
+        {
+            mainTaskWithSubTasks.SubTasks[i].Order = i;
+        }
+
+        await db.SaveChangesAsync(cancellationToken);
+
+        return new MainTaskPayload(Mapper.MapToMainTaskDto(mainTaskWithSubTasks));
+    }
+
+    // Need Test Errors
+    
     #endregion
 }

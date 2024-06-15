@@ -1,0 +1,39 @@
+﻿{
+  "data": {
+    "addSubTasks": {
+      "mainTask": {
+        "description": "",
+        "id": 1,
+        "status": "Todo",
+        "title": "Build UI for onboarding flow",
+        "subTasks": [
+          {
+            "id": 1,
+            "isCompleted": true,
+            "title": "Sign up page"
+          },
+          {
+            "id": 2,
+            "isCompleted": false,
+            "title": "Sign in page"
+          },
+          {
+            "id": 3,
+            "isCompleted": false,
+            "title": "Welcome page"
+          },
+          {
+            "id": 55,
+            "isCompleted": false,
+            "title": "Sub Task Example 1"
+          },
+          {
+            "id": 56,
+            "isCompleted": false,
+            "title": "Sub Task Example 2"
+          }
+        ]
+      }
+    }
+  }
+}
