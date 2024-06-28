@@ -104,10 +104,6 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     Console.WriteLine("EnsureCreated");
     dbContext.Database.EnsureCreated();
-    if(dbContext.Database.GetPendingMigrations().Any()){
-        Console.WriteLine("Migrate");
-        dbContext.Database.Migrate();
-    }
 }
 
 app.UseSession();
