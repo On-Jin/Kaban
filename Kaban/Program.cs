@@ -142,6 +142,7 @@ app.MapGet("/protected", async (ctx) =>
 app.MapGet("/me", async (IUserService userService, AppDbContext db, HttpContext ctx) =>
 {
     Console.WriteLine("me");
+    Console.WriteLine(ctx.User.Identity!.Name!);
     var userId = ctx.User.Identity!.Name!;
     var user = (await userService.Find(userId))!;
     await ctx.Response.WriteAsJsonAsync(new Me()
@@ -161,6 +162,7 @@ app.MapGet("/discord-login", async (HttpContext ctx, AppDbContext db, IUserServi
     if (!authenticateResult.Succeeded)
     {
         await ctx.ChallengeAsync("discord");
+        return;
     }
 
     var claims = authenticateResult.Principal.Claims.ToList();
@@ -202,6 +204,11 @@ app.MapGet("/discord-login", async (HttpContext ctx, AppDbContext db, IUserServi
             claims.Add(new Claim(ClaimTypes.Name, shadowUserIdString));
         }
 
+        await ctx.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)),
+            new AuthenticationProperties { IsPersistent = true });
+
 
         ctx.Session.Remove("ShadowUserId");
     }
@@ -212,10 +219,14 @@ app.MapGet("/discord-login", async (HttpContext ctx, AppDbContext db, IUserServi
         new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)),
         new AuthenticationProperties { IsPersistent = true });
 
-    ctx.Response.Redirect("/");
+    ctx.Response.Redirect(isDevelopment ? "http://localhost:3000/" : "/");
 });
 
-app.MapGet("/logout", async ctx => { await ctx.SignOutAsync(); });
+app.MapGet("/logout", async ctx =>
+{
+    await ctx.SignOutAsync();
+    ctx.Response.Redirect(isDevelopment ? "http://localhost:3000/" : "/");
+});
 
 app.Run();
 

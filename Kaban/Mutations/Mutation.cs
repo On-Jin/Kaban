@@ -70,6 +70,14 @@ public class Mutation
         {
             Name = input.Name
         };
+        if (input.ColumnNames != null)
+        {
+            foreach (var columnName in input.ColumnNames)
+            {
+                newBoard.Columns.Add(new Column() { Name = columnName, Order = newBoard.Columns.Count });
+            }
+        }
+
         user.Boards.Add(newBoard);
 
         await context.SaveChangesAsync(cancellationToken);
@@ -87,7 +95,12 @@ public class Mutation
     {
         var user = (await userService.Find(httpContext.HttpContext.User.Identity.Name))!;
 
-        var board = db.Boards.Include(b => b.User).SingleOrDefault(b => b.Id == input.Id && b.UserId == user.Id);
+        var board = db.Boards
+            .Include(b => b.User)
+            .Include(board => board.Columns)
+            .ThenInclude(column => column.MainTasks)
+            .ThenInclude(mainTask => mainTask.SubTasks)
+            .SingleOrDefault(b => b.Id == input.Id && b.UserId == user.Id);
 
         if (board == null)
             throw new GraphQLException(new Error("Board not found.", ErrorCode.NotFound));
@@ -275,6 +288,20 @@ public class Mutation
             Description = input.Description ?? "",
             Order = column.MainTasks.Count
         };
+
+        if (input.SubTaskTitles != null)
+        {
+            foreach (var title in input.SubTaskTitles)
+            {
+                newMainTask.SubTasks.Add(new SubTask()
+                {
+                    Title = title,
+                    IsCompleted = false,
+                    Order = newMainTask.SubTasks.Count
+                });
+            }
+        }
+
         column.MainTasks.Add(newMainTask);
 
         await db.SaveChangesAsync(cancellationToken);
@@ -634,7 +661,7 @@ public class Mutation
         var mainTaskWithSubTasks = db.MainTasks
             .Include(mt => mt.SubTasks)
             .First(mt => mt.Id == refSubTask.MainTaskId);
-        
+
         for (var i = 0; i < mainTaskWithSubTasks.SubTasks.Count; i++)
         {
             mainTaskWithSubTasks.SubTasks[i].Order = i;
@@ -646,6 +673,6 @@ public class Mutation
     }
 
     // Need Test Errors
-    
+
     #endregion
 }
