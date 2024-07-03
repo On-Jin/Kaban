@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using Respawn;
@@ -41,6 +42,7 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
                 .AddScheme<TestAuthHandlerOptions, TestAuthHandler>(TestAuthHandler.AuthenticationScheme,
                     options => { });
         });
+
         builder.ConfigureServices(services =>
         {
             var sp = services.BuildServiceProvider();
@@ -50,6 +52,20 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
             var db = scopedServices.GetRequiredService<AppDbContext>();
             db.Database.EnsureCreated();
         });
+
+        var configurationValues = new Dictionary<string, string>
+        {
+            { "DISCORD_CLIENT_ID", "dummy" },
+            { "DISCORD_SECRET", "dummy" },
+        };
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(configurationValues)
+            .Build();
+        builder.UseConfiguration(configuration)
+            .ConfigureAppConfiguration(configurationBuilder =>
+            {
+                configurationBuilder.AddInMemoryCollection(configurationValues);
+            });
         base.ConfigureWebHost(builder);
     }
 
