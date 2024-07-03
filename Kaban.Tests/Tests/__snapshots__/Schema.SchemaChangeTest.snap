@@ -89,9 +89,11 @@ type Mutation {
   patchMainTask(input: PatchMainTaskInput!): MainTaskPayload!
   moveMainTask(input: MoveMainTaskInput!): BoardPayload!
   deleteMainTask(input: DeleteMainTaskInput!): MainTaskPayload!
-  addSubTask(input: AddSubTaskInput!): BoardPayload!
-  patchSubTask(input: PatchSubTaskInput!): BoardPayload!
-  deleteSubTask(input: DeleteSubTaskInput!): BoardPayload!
+  addSubTask(input: AddSubTaskInput!): MainTaskPayload!
+  addSubTasks(input: AddSubTasksInput!): MainTaskPayload!
+  patchSubTask(input: PatchSubTaskInput!): SubTaskPayload!
+  deleteSubTask(input: DeleteSubTaskInput!): MainTaskPayload!
+  deleteSubTasks(input: DeleteSubTasksInput!): MainTaskPayload!
 }
 
 type Query {
@@ -116,8 +118,13 @@ type SubTaskDto {
   isCompleted: Boolean!
 }
 
+type SubTaskPayload {
+  subTask: SubTaskDto!
+}
+
 input AddBoardInput {
   name: String!
+  columnNames: [String!]
 }
 
 input AddColumnInput {
@@ -129,11 +136,17 @@ input AddMainTaskInput {
   columnId: Int!
   title: String!
   description: String
+  subTaskTitles: [String!]
 }
 
 input AddSubTaskInput {
   mainTaskId: Int!
   title: String!
+}
+
+input AddSubTasksInput {
+  mainTaskId: Int!
+  titles: [String!]!
 }
 
 input DeleteBoardInput {
@@ -150,6 +163,10 @@ input DeleteMainTaskInput {
 
 input DeleteSubTaskInput {
   id: Int!
+}
+
+input DeleteSubTasksInput {
+  ids: [Int!]!
 }
 
 input MoveMainTaskInput {

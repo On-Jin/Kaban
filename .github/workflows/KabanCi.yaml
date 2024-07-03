@@ -20,9 +20,9 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             rm -rf ${{ secrets.APP_PATH }}
-
-#      - name: 'Integration tests'
-#        run: dotnet test
+      
+      #      - name: 'Integration tests'
+      #        run: dotnet test
 
       - name: 'Build the Docker image'
         run: docker build ./Kaban/ -t kaban:latest
@@ -77,3 +77,12 @@ jobs:
           debug: true
           script: |
             docker compose -f ${{ secrets.APP_PATH }}/docker-compose.yaml up -d
+
+      - name: 'Remove old and unused Docker resources post-deployment'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            docker image prune -af

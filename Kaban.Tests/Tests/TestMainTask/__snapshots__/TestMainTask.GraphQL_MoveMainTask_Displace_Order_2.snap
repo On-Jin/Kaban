@@ -52,16 +52,16 @@
               },
               {
                 "description": "",
-                "id": 7,
+                "id": 3,
                 "status": "Column 1",
-                "title": "MT_2__C1",
+                "title": "MT_2__C0",
                 "subTasks": []
               },
               {
                 "description": "",
-                "id": 3,
+                "id": 7,
                 "status": "Column 1",
-                "title": "MT_2__C0",
+                "title": "MT_2__C1",
                 "subTasks": []
               },
               {
