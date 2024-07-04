@@ -24,7 +24,11 @@ builder.Services.AddAuthentication(options =>
         options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = "discord";
     })
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o => { o.Cookie.HttpOnly = false; })
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
+    {
+        o.Cookie.HttpOnly = false;
+        o.Cookie.Name = "kaban-cookie";
+    })
     .AddOAuth("discord", o =>
     {
         o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
