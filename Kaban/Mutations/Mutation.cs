@@ -40,7 +40,6 @@ public class Mutation
 
     [Authorize]
     public async Task<BoardsPayload> PopulateMe(
-        AddBoardInput input,
         [Service] AppDbContext context,
         [Service] IHttpContextAccessor httpContext,
         [Service] IUserService userService,

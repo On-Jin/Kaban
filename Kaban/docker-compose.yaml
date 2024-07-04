@@ -1,5 +1,5 @@
 services:
-  kaban-backend:
+  kaban:
     container_name: kaban
     image: kaban:latest
     restart: always
