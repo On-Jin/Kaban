@@ -27,7 +27,7 @@ type BoardPayload {
 }
 
 type BoardsPayload {
-  board: [Board!]!
+  boards: [Board!]!
 }
 
 type Book {
@@ -78,7 +78,7 @@ type Me {
 }
 
 type Mutation {
-  populateMe(input: AddBoardInput!): BoardsPayload!
+  populateMe: BoardsPayload!
   addBoard(input: AddBoardInput!): BoardPayload!
   patchBoard(input: PatchBoardInput!): BoardPayload!
   deleteBoard(input: DeleteBoardInput!): BoardPayload!
