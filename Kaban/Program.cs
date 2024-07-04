@@ -11,7 +11,6 @@ using Kaban.Query;
 using Kaban.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
@@ -40,6 +39,7 @@ builder.Services.AddAuthentication(options =>
         o.UserInformationEndpoint = "https://discord.com/api/users/@me";
         o.SaveTokens = true;
         o.Scope.Add("identify");
+        // o.CorrelationCookie.SameSite = SameSiteMode.None;
 
         o.ClaimActions.MapJsonKey("urn:discord:id", "id");
         o.ClaimActions.MapJsonKey("urn:discord:username", "username");
@@ -224,13 +224,13 @@ app.MapGet("/discord-login", async (HttpContext ctx, AppDbContext db, IUserServi
         new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)),
         new AuthenticationProperties { IsPersistent = true });
 
-    ctx.Response.Redirect(isDevelopment ? "http://localhost:3000/" : "/");
+    ctx.Response.Redirect(isDevelopment ? "http://localhost:3000/" : "https://kaban.ntoniolo.wtf/");
 });
 
 app.MapGet("/logout", async ctx =>
 {
     await ctx.SignOutAsync();
-    ctx.Response.Redirect(isDevelopment ? "http://localhost:3000/" : "/");
+    ctx.Response.Redirect(isDevelopment ? "http://localhost:3000/" : "https://kaban.ntoniolo.wtf/");
 });
 
 app.Run();
