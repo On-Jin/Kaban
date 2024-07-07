@@ -17,6 +17,13 @@ bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
+builder.Services.AddCors();
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -25,7 +32,9 @@ builder.Services.AddAuthentication(options =>
     })
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
     {
-        o.Cookie.HttpOnly = false;
+        if (!isDevelopment)
+            o.Cookie.Domain = ".kaban.ntoniolo.wtf";
+        o.Cookie.HttpOnly = true;
         o.Cookie.Name = "kaban-cookie";
     })
     .AddOAuth("discord", o =>
@@ -39,7 +48,11 @@ builder.Services.AddAuthentication(options =>
         o.UserInformationEndpoint = "https://discord.com/api/users/@me";
         o.SaveTokens = true;
         o.Scope.Add("identify");
-        // o.CorrelationCookie.SameSite = SameSiteMode.None;
+        o.CorrelationCookie.Name = "kaban-correlation";
+        o.CorrelationCookie.SameSite = SameSiteMode.None;
+        o.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
+        o.CorrelationCookie.HttpOnly = true;
+
 
         o.ClaimActions.MapJsonKey("urn:discord:id", "id");
         o.ClaimActions.MapJsonKey("urn:discord:username", "username");
@@ -88,7 +101,13 @@ builder.Services
     .AddType<MainTaskType>()
     .AddType<BoardType>()
     .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = isDevelopment);
-builder.Services.AddSession();
+builder.Services.AddSession(o =>
+{
+    o.Cookie.Name = "kaban-session";
+    if (!isDevelopment)
+        o.Cookie.Domain = ".kaban.ntoniolo.wtf";
+    o.Cookie.HttpOnly = true;
+});
 builder.Services.AddMvc(o => { o.EnableEndpointRouting = false; });
 builder.Services.AddHttpContextAccessor();
 
@@ -101,12 +120,21 @@ builder.Services.AddAuthorizationBuilder()
             .RequireClaim("urn:discord:id");
     });
 
+
 var app = builder.Build();
+
+
+app.UseCors(b =>
+{
+    b.AllowAnyMethod()
+        .AllowAnyHeader()
+        .WithOrigins("https://kaban.ntoniolo.wtf/", "http://kaban.ntoniolo.wtf/")
+        .AllowCredentials();
+});
 
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    Console.WriteLine("EnsureCreated");
     dbContext.Database.EnsureCreated();
 }
 
@@ -146,8 +174,7 @@ app.MapGet("/protected", async (ctx) =>
 
 app.MapGet("/me", async (IUserService userService, AppDbContext db, HttpContext ctx) =>
 {
-    Console.WriteLine("me");
-    Console.WriteLine(ctx.User.Identity!.Name!);
+    Console.WriteLine($"/me name : {ctx.User.Identity!.Name!}");
     var userId = ctx.User.Identity!.Name!;
     var user = (await userService.Find(userId))!;
     await ctx.Response.WriteAsJsonAsync(new Me()
