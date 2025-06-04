@@ -33,7 +33,7 @@ builder.Services.AddAuthentication(options =>
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
     {
         if (!isDevelopment)
-            o.Cookie.Domain = ".kaban.ntoniolo.wtf";
+            o.Cookie.Domain = ".kaban.ntoniolo.com";
         o.Cookie.HttpOnly = true;
         o.Cookie.Name = "kaban-cookie";
     })
@@ -105,7 +105,7 @@ builder.Services.AddSession(o =>
 {
     o.Cookie.Name = "kaban-session";
     if (!isDevelopment)
-        o.Cookie.Domain = ".kaban.ntoniolo.wtf";
+        o.Cookie.Domain = ".kaban.ntoniolo.com";
     o.Cookie.HttpOnly = true;
 });
 builder.Services.AddMvc(o => { o.EnableEndpointRouting = false; });
@@ -128,7 +128,7 @@ app.UseCors(b =>
 {
     b.AllowAnyMethod()
         .AllowAnyHeader()
-        .WithOrigins("https://kaban.ntoniolo.wtf/", "http://kaban.ntoniolo.wtf/")
+        .WithOrigins("https://kaban.ntoniolo.com/", "http://kaban.ntoniolo.com/")
         .AllowCredentials();
 });
 
@@ -251,13 +251,13 @@ app.MapGet("/discord-login", async (HttpContext ctx, AppDbContext db, IUserServi
         new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)),
         new AuthenticationProperties { IsPersistent = true });
 
-    ctx.Response.Redirect(isDevelopment ? "http://localhost:3000/" : "https://kaban.ntoniolo.wtf/");
+    ctx.Response.Redirect(isDevelopment ? "http://localhost:3000/" : "https://kaban.ntoniolo.com/");
 });
 
 app.MapGet("/logout", async ctx =>
 {
     await ctx.SignOutAsync();
-    ctx.Response.Redirect(isDevelopment ? "http://localhost:3000/" : "https://kaban.ntoniolo.wtf/");
+    ctx.Response.Redirect(isDevelopment ? "http://localhost:3000/" : "https://kaban.ntoniolo.com/");
 });
 
 app.Run();
