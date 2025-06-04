@@ -6,10 +6,10 @@ services:
     ports:
       - 5264:5264
       - 7001:7001
-    secrets:
-      - KABANDBCONNECTIONSTRING
-      - DISCORD_CLIENT_ID
-      - DISCORD_SECRET
+    environment:
+      - KABANDBCONNECTIONSTRING=${KABANDBCONNECTIONSTRING}
+      - DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
+      - DISCORD_SECRET=${DISCORD_SECRET}
 
 networks:
   default:
