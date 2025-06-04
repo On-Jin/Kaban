@@ -77,7 +77,7 @@ jobs:
           envs: SHA,KABANDBCONNECTIONSTRING,DISCORD_CLIENT_ID,DISCORD_SECRET
           debug: true
           script: |
-            docker-compose -f ${{ secrets.APP_PATH }}/docker-compose.yaml up -d
+            docker compose -f ${{ secrets.APP_PATH }}/docker-compose.yaml up -d
 
       - name: 'Remove old and unused Docker resources post-deployment'
         uses: appleboy/ssh-action@v1.0.3
